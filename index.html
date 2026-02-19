@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seedance 2.0 电影级提示词智能体</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #8892b0;
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #e94560;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccd6f6;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e94560;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .template-btn {
+            padding: 12px;
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 8px;
+            color: #e94560;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .template-btn:hover,
+        .template-btn.active {
+            background: rgba(233, 69, 96, 0.3);
+            border-color: #e94560;
+        }
+
+        .tag-section {
+            margin-bottom: 20px;
+        }
+
+        .tag-section h3 {
+            font-size: 0.9rem;
+            color: #8892b0;
+            margin-bottom: 10px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tag:hover,
+        .tag.active {
+            background: rgba(233, 69, 96, 0.3);
+            border-color: #e94560;
+            color: #e94560;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid rgba(233, 69, 96, 0.4);
+            border-radius: 6px;
+            color: #e94560;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(233, 69, 96, 0.4);
+        }
+
+        .zh-desc {
+            color: #8892b0;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .output-section {
+            margin-top: 20px;
+        }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .output-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .storyboard {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .shot {
+            display: flex;
+            gap: 15px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .shot:last-child {
+            border-bottom: none;
+        }
+
+        .shot-number {
+            width: 30px;
+            height: 30px;
+            background: #e94560;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .shot-content {
+            flex: 1;
+        }
+
+        .shot-type {
+            color: #e94560;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .shot-desc {
+            color: #ccd6f6;
+            font-size: 0.9rem;
+        }
+
+        .shot-zh {
+            color: #8892b0;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8892b0;
+            font-size: 0.85rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+        }
+
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .credits {
+            color: #e94560;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Seedance 2.0 电影级提示词智能体</h1>
+            <p>专业 AI 视频生成提示词工程系统 | 电影级 / 纪录片 / MV 专用</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- 左侧：输入面板 -->
+            <div class="panel">
+                <h2>📝 创意输入</h2>
+
+                <div class="template-grid">
+                    <button class="template-btn active" data-template="sci_fi_epic">科幻史诗</button>
+                    <button class="template-btn" data-template="cyberpunk_night">赛博朋克</button>
+                    <button class="template-btn" data-template="documentary_nature">纪录片</button>
+                    <button class="template-btn" data-template="music_video_dance">MV舞蹈</button>
+                    <button class="template-btn" data-template="romantic_drama">浪漫剧情</button>
+                    <button class="template-btn" data-template="horror_thriller">恐怖惊悚</button>
+                    <button class="template-btn" data-template="action_sequence">动作场面</button>
+                    <button class="template-btn" data-template="period_drama">年代剧</button>
+                    <button class="template-btn" data-template="underwater_world">水下世界</button>
+                    <button class="template-btn" data-template="space_odyssey">太空漫游</button>
+                    <button class="template-btn" data-template="fantasy_magic">奇幻魔法</button>
+                    <button class="template-btn" data-template="noir_detective">黑色侦探</button>
+                </div>
+
+                <div class="form-group">
+                    <label>场景描述</label>
+                    <textarea id="scene-desc" placeholder="描述你想要的场景，例如：一个宇航员在火星表面行走，红色的沙漠和岩石，远处的地球在天空中..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>视频时长</label>
+                        <select id="duration">
+                            <option value="5">5秒</option>
+                            <option value="10" selected>10秒</option>
+                            <option value="15">15秒</option>
+                            <option value="30">30秒</option>
+                            <option value="60">60秒</option>
+                            <option value="120">2分钟</option>
+                            <option value="300">5分钟</option>
+                            <option value="600">10分钟</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>画面比例</label>
+                        <select id="aspect-ratio">
+                            <option value="16:9" selected>16:9 (电影)</option>
+                            <option value="9:16">9:16 (竖屏)</option>
+                            <option value="1:1">1:1 (方形)</option>
+                            <option value="2.39:1">2.39:1 (宽银幕)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>情绪氛围</label>
+                        <select id="mood">
+                            <option value="epic">史诗</option>
+                            <option value="mysterious">神秘</option>
+                            <option value="romantic">浪漫</option>
+                            <option value="dark">暗黑</option>
+                            <option value="powerful">震撼</option>
+                            <option value="warm">温暖</option>
+                            <option value="melancholic">忧郁</option>
+                            <option value="tense">紧张</option>
+                            <option value="dreamy">梦幻</option>
+                            <option value="energetic">活力</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>生成模式</label>
+                        <select id="mode">
+                            <option value="pro" selected>Pro (专业)</option>
+                            <option value="cinema">Cinema (电影级)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tag-section">
+                    <h3>🎥 镜头语言</h3>
+                    <div class="tag-list" id="lens-tags">
+                        <span class="tag active" data-zh="全景">wide_shot</span>
+                        <span class="tag" data-zh="特写">close_up</span>
+                        <span class="tag" data-zh="跟踪">tracking</span>
+                        <span class="tag" data-zh="推轨">dolly_in</span>
+                        <span class="tag" data-zh="摇臂">crane_shot</span>
+                        <span class="tag" data-zh="斯坦尼康">steadicam</span>
+                        <span class="tag" data-zh="手持">handheld</span>
+                        <span class="tag" data-zh="航拍">aerial_shot</span>
+                        <span class="tag" data-zh="过肩">over_shoulder</span>
+                        <span class="tag" data-zh="POV">point_of_view</span>
+                    </div>
+                </div>
+
+                <div class="tag-section">
+                    <h3>💡 光影效果</h3>
+                    <div class="tag-list" id="light-tags">
+                        <span class="tag active" data-zh="电影光">cinematic_lighting</span>
+                        <span class="tag" data-zh="黄金时刻">golden_hour</span>
+                        <span class="tag" data-zh="霓虹光">neon_light</span>
+                        <span class="tag" data-zh="体积光">volumetric_light</span>
+                        <span class="tag" data-zh="轮廓光">rim_light</span>
+                        <span class="tag" data-zh="三点布光">three_point_lighting</span>
+                        <span class="tag" data-zh="自然光">natural_light</span>
+                        <span class="tag" data-zh="柔光">soft_light</span>
+                        <span class="tag" data-zh="硬光">hard_light</span>
+                    </div>
+                </div>
+
+                <div class="tag-section">
+                    <h3>🎨 色彩风格</h3>
+                    <div class="tag-list" id="color-tags">
+                        <span class="tag active" data-zh="青橙色调">teal_orange</span>
+                        <span class="tag" data-zh="胶片颗粒">film_grain</span>
+                        <span class="tag" data-zh="高对比">high_contrast</span>
+                        <span class="tag" data-zh="低饱和">desaturated</span>
+                        <span class="tag" data-zh="鲜艳">vibrant</span>
+                        <span class="tag" data-zh="暖色调">warm_tones</span>
+                        <span class="tag" data-zh="冷色调">cool_tones</span>
+                        <span class="tag" data-zh="黑白">monochrome</span>
+                        <span class="tag" data-zh="复古">vintage</span>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generate-btn">
+                    🚀 生成电影级提示词
+                </button>
+            </div>
+
+            <!-- 右侧：输出面板 -->
+            <div class="panel">
+                <h2>🎬 生成结果</h2>
+
+                <div class="output-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="color: #8892b0; font-size: 0.9rem;">正提示词 (Positive Prompt)</h3>
+                        <button class="copy-btn" data-target="positive-output">📋 复制</button>
+                    </div>
+                    <div class="output-box">
+                        <pre id="positive-output">点击"生成"按钮创建提示词...</pre>
+                    </div>
+                    <div id="positive-zh" class="zh-desc" style="color: #8892b0; font-size: 0.8rem; margin-top: 5px;"></div>
+                </div>
+
+                <div class="output-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="color: #8892b0; font-size: 0.9rem;">负提示词 (Negative Prompt)</h3>
+                        <button class="copy-btn" data-target="negative-output">📋 复制</button>
+                    </div>
+                    <div class="output-box">
+                        <pre id="negative-output">blurry, low quality, distorted, deformed...</pre>
+                    </div>
+                    <div id="negative-zh" class="zh-desc" style="color: #8892b0; font-size: 0.8rem; margin-top: 5px;">模糊、低质量、扭曲、变形、水印、文字...</div>
+                </div>
+
+                <div class="output-section">
+                    <h3 style="color: #8892b0; font-size: 0.9rem; margin-bottom: 10px;">API 参数 (JSON)</h3>
+                    <div class="output-box">
+                        <pre id="api-output">{}</pre>
+                    </div>
+                </div>
+
+                <div class="output-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="color: #8892b0; font-size: 0.9rem;">分镜脚本 (Storyboard)</h3>
+                        <button class="copy-btn" data-target="storyboard">📋 复制全部</button>
+                    </div>
+                    <div class="storyboard" id="storyboard">
+                        <div class="shot">
+                            <div class="shot-number">1</div>
+                            <div class="shot-content">
+                                <div class="shot-type">镜头 1 - 开场镜头 (Establishing)</div>
+                                <div class="shot-desc">等待生成...</div>
+                                <div class="shot-zh"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-item">
+            <span class="status-dot"></span>
+            <span>系统就绪</span>
+        </div>
+        <div class="api-status">
+            <span class="status-item">API: <span style="color: #4ade80;">已连接</span></span>
+            <span class="status-item credits">余额: 1,250 点</span>
+        </div>
+    </div>
+
+    <script>
+        // 模板数据
+        const templates = {
+            sci_fi_epic: {
+                name: "科幻史诗",
+                prompt: "Epic sci-fi scene, massive futuristic cityscape with towering megastructures reaching into clouds, flying vehicles weaving between buildings, holographic advertisements glowing in neon colors, distant planet visible in sky, cinematic wide shot, aerial drone perspective, volumetric lighting with god rays, teal and orange color grading, lens flare from sun, 8k resolution, photorealistic, unreal engine 5, film grain, IMAX quality, dramatic atmosphere",
+                tags: {
+                    lens: ["wide_shot", "aerial_shot"],
+                    light: ["volumetric_light", "god_rays"],
+                    color: ["teal_orange", "high_contrast"]
+                }
+            },
+            cyberpunk_night: {
+                name: "赛博朋克",
+                prompt: "Cyberpunk city street at rainy night, lone figure walking through wet streets, towering skyscrapers with massive holographic neon signs in pink cyan and purple, reflections on rain-soaked pavement, cinematic medium shot, tracking camera movement, neon lighting with practical sources, volumetric fog, rain particles visible in light beams, teal and magenta color grading, 8k resolution, photorealistic, film grain",
+                tags: {
+                    lens: ["medium_shot", "tracking"],
+                    light: ["neon_light", "volumetric_fog"],
+                    color: ["teal_magenta", "high_contrast"]
+                }
+            },
+            documentary_nature: {
+                name: "纪录片",
+                prompt: "Stunning wildlife documentary footage, majestic lion walking through golden savanna grass at sunset, warm golden hour lighting, long shadows stretching across landscape, cinematic wide shot, slow tracking movement, shallow depth of field with beautiful bokeh, professional color grading with warm tones, 8k resolution, photorealistic, national geographic quality, film grain",
+                tags: {
+                    lens: ["wide_shot", "tracking"],
+                    light: ["golden_hour", "natural_light"],
+                    color: ["warm_tones", "natural_color"]
+                }
+            },
+            music_video_dance: {
+                name: "MV舞蹈",
+                prompt: "Dynamic music video dance scene, professional dancer in urban environment, dramatic rim lighting with colored gels, smoke and atmospheric haze, fast-paced editing style, multiple camera angles, vibrant color grading with saturated neon tones, motion blur on fast movements, rhythmic camera movements matching beat, 4k resolution, high energy, professional production quality",
+                tags: {
+                    lens: ["medium_shot", "close_up"],
+                    light: ["rim_light", "colored_gels"],
+                    color: ["vibrant", "saturated"]
+                }
+            },
+            romantic_drama: {
+                name: "浪漫剧情",
+                prompt: "Romantic cinematic scene, couple standing on cliff overlooking ocean at sunset, warm golden hour lighting, soft focus background with bokeh, gentle wind blowing through hair, cinematic medium close-up, slow dolly movement, shallow depth of field, warm color grading with soft highlights, lens flare from setting sun, emotional atmosphere, 8k resolution, photorealistic, film grain",
+                tags: {
+                    lens: ["medium_close_up", "dolly_in"],
+                    light: ["golden_hour", "soft_light"],
+                    color: ["warm_tones", "soft_highlights"]
+                }
+            },
+            horror_thriller: {
+                name: "恐怖惊悚",
+                prompt: "Horror thriller scene, dark abandoned hallway with flickering fluorescent lights, shadowy figure in distance, low key lighting with high contrast, Dutch angle camera tilt, handheld camera movement, film grain, desaturated color grading with cold blue tones, shallow depth of field, lens distortion, unsettling atmosphere, 4k resolution, cinematic",
+                tags: {
+                    lens: ["dutch_angle", "handheld"],
+                    light: ["low_key", "flickering_light"],
+                    color: ["desaturated", "cold_blue"]
+                }
+            },
+            action_sequence: {
+                name: "动作场面",
+                prompt: "High-octane action sequence, intense car chase through city streets at night, sparks flying from collisions, dramatic lighting with street lamps and neon signs, cinematic wide shot, fast-paced tracking camera, motion blur on vehicles, lens flares from headlights, teal and orange color grading, 8k resolution, photorealistic, IMAX quality",
+                tags: {
+                    lens: ["wide_shot", "tracking_shot"],
+                    light: ["dramatic_lighting", "neon_light"],
+                    color: ["teal_orange", "high_contrast"]
+                }
+            },
+            period_drama: {
+                name: "年代剧",
+                prompt: "Elegant period drama scene, 1920s grand ballroom with crystal chandeliers, dancers in vintage attire, warm tungsten lighting with golden glow, cinematic wide shot, smooth camera movement through crowd, shallow depth of field with beautiful bokeh from lights, sepia-tinged color grading with rich shadows, film grain, 8k resolution",
+                tags: {
+                    lens: ["wide_shot", "smooth_movement"],
+                    light: ["tungsten_light", "warm_light"],
+                    color: ["sepia_tinged", "warm_tones"]
+                }
+            },
+            underwater_world: {
+                name: "水下世界",
+                prompt: "Breathtaking underwater scene, crystal clear ocean with sun rays penetrating water surface, vibrant coral reef with tropical fish, diver swimming through frame, cinematic wide shot, slow graceful movement, volumetric light beams, blue-green color grading with caustic light patterns, particles floating in water, 8k resolution, photorealistic, documentary quality",
+                tags: {
+                    lens: ["wide_shot", "slow_movement"],
+                    light: ["natural_light", "caustic_light"],
+                    color: ["blue_green", "vibrant"]
+                }
+            },
+            space_odyssey: {
+                name: "太空漫游",
+                prompt: "Stunning space scene, astronaut floating near massive space station with Earth in background, stars scattered across infinite blackness, sun creating dramatic rim lighting on suit, cinematic wide shot, slow rotation movement, high contrast lighting, deep blacks with detailed shadows, blue and white color grading, 8k resolution, photorealistic, NASA quality",
+                tags: {
+                    lens: ["wide_shot", "slow_rotation"],
+                    light: ["rim_light", "high_contrast"],
+                    color: ["blue_white", "high_contrast"]
+                }
+            },
+            fantasy_magic: {
+                name: "奇幻魔法",
+                prompt: "Enchanting fantasy scene, ancient wizard casting spell in mystical forest, glowing magical particles swirling in air, ethereal light beams through trees, cinematic medium shot, slow motion spell effects, vibrant purple and gold color grading, volumetric fog, floating runes and symbols, 8k resolution, photorealistic, cinematic",
+                tags: {
+                    lens: ["medium_shot", "slow_motion"],
+                    light: ["ethereal_light", "volumetric_fog"],
+                    color: ["vibrant", "purple_gold"]
+                }
+            },
+            noir_detective: {
+                name: "黑色侦探",
+                prompt: "Classic film noir scene, detective sitting at desk in dimly lit office, venetian blinds casting striped shadows, cigarette smoke drifting through light beam, cinematic medium shot, dramatic chiaroscuro lighting, high contrast black and white with selective color, rain outside window, 4k resolution, cinematic, film grain",
+                tags: {
+                    lens: ["medium_shot", "low_angle"],
+                    light: ["chiaroscuro", "practical_light"],
+                    color: ["high_contrast", "monochrome"]
+                }
+            }
+        };
+
+        // 中文翻译映射
+        const zhTranslations = {
+            wide_shot: "全景",
+            close_up: "特写",
+            tracking: "跟踪",
+            dolly_in: "推轨",
+            crane_shot: "摇臂",
+            steadicam: "斯坦尼康",
+            handheld: "手持",
+            aerial_shot: "航拍",
+            over_shoulder: "过肩",
+            point_of_view: "POV",
+            cinematic_lighting: "电影光",
+            golden_hour: "黄金时刻",
+            neon_light: "霓虹光",
+            volumetric_light: "体积光",
+            rim_light: "轮廓光",
+            teal_orange: "青橙色调",
+            film_grain: "胶片颗粒",
+            high_contrast: "高对比",
+            desaturated: "低饱和",
+            vibrant: "鲜艳"
+        };
+
+        // 复制功能
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const targetId = btn.getAttribute('data-target');
+                let textToCopy = '';
+                
+                if (targetId === 'storyboard') {
+                    // 复制分镜内容
+                    const shots = document.querySelectorAll('.shot');
+                    shots.forEach((shot, index) => {
+                        const type = shot.querySelector('.shot-type')?.textContent || '';
+                        const desc = shot.querySelector('.shot-desc')?.textContent || '';
+                        textToCopy += `镜头${index + 1}: ${type}\n${desc}\n\n`;
+                    });
+                } else {
+                    const element = document.getElementById(targetId);
+                    textToCopy = element?.textContent || '';
+                }
+                
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    btn.textContent = '✅ 已复制';
+                    setTimeout(() => {
+                        btn.textContent = '📋 复制';
+                    }, 2000);
+                } catch (err) {
+                    console.error('复制失败:', err);
+                    btn.textContent = '❌ 失败';
+                    setTimeout(() => {
+                        btn.textContent = '📋 复制';
+                    }, 2000);
+                }
+            });
+        });
+
+        // 标签切换
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+            });
+        });
+
+        // 模板切换
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // 生成按钮
+        document.getElementById('generate-btn').addEventListener('click', () => {
+            const desc = document.getElementById('scene-desc').value;
+            const duration = document.getElementById('duration').value;
+            const ratio = document.getElementById('aspect-ratio').value;
+            const mood = document.getElementById('mood').value;
+
+            // 获取选中的标签
+            const activeLens = Array.from(document.querySelectorAll('#lens-tags .tag.active')).map(t => t.textContent);
+            const activeLight = Array.from(document.querySelectorAll('#light-tags .tag.active')).map(t => t.textContent);
+            const activeColor = Array.from(document.querySelectorAll('#color-tags .tag.active')).map(t => t.textContent);
+
+            // 构建提示词
+            const positivePrompt = `${desc}, ${activeLens.join(', ')}, ${activeLight.join(', ')}, ${activeColor.join(', ')}, 8k resolution, photorealistic, cinematic, film grain, professional color grading, ${mood} atmosphere`;
+
+            const negativePrompt = "blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, cropped, out of frame, worst quality, low resolution, oversaturated, underexposed, overexposed, shaky camera, jittery motion, flickering, cartoon, anime, painting";
+
+            // 构建中文描述
+            const lensZh = activeLens.map(tag => zhTranslations[tag] || tag).join('、');
+            const lightZh = activeLight.map(tag => zhTranslations[tag] || tag).join('、');
+            const colorZh = activeColor.map(tag => zhTranslations[tag] || tag).join('、');
+
+            // API 参数
+            const apiParams = {
+                prompt: positivePrompt,
+                negative_prompt: negativePrompt,
+                model: "seedance_2.0",
+                mode: "pro",
+                duration: parseInt(duration),
+                aspect_ratio: ratio,
+                cinematic_grade: true,
+                film_grain: true,
+                sharpness: 0.9,
+                stabilization: "high"
+            };
+
+            // 更新输出
+            document.getElementById('positive-output').textContent = positivePrompt;
+            document.getElementById('negative-output').textContent = negativePrompt;
+            document.getElementById('positive-zh').textContent = `镜头：${lensZh} | 光影：${lightZh} | 色彩：${colorZh}`;
+            document.getElementById('api-output').textContent = JSON.stringify(apiParams, null, 2);
+
+            // 生成分镜
+            const shotCount = Math.ceil(parseInt(duration) / 5);
+            const shotTypes = ['开场镜头', '发展镜头', '高潮镜头', '转折镜头', '结尾镜头'];
+            let storyboardHTML = '';
+            for (let i = 1; i <= shotCount; i++) {
+                const lensTag = activeLens[(i - 1) % activeLens.length] || 'wide_shot';
+                const lightTag = activeLight[(i - 1) % activeLight.length] || 'cinematic_lighting';
+                const lensZhName = zhTranslations[lensTag] || lensTag;
+                const lightZhName = zhTranslations[lightTag] || lightTag;
+                const shotType = shotTypes[Math.min(i - 1, shotTypes.length - 1)];
+                
+                storyboardHTML += `
+                    <div class="shot">
+                        <div class="shot-number">${i}</div>
+                        <div class="shot-content">
+                            <div class="shot-type">镜头 ${i} - ${shotType}</div>
+                            <div class="shot-desc">${lensTag}, ${lightTag}, 5s</div>
+                            <div class="shot-zh">${lensZhName} + ${lightZhName}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('storyboard').innerHTML = storyboardHTML;
+        });
+    </script>
+</body>
+</html>

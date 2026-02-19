@@ -1,0 +1,12 @@
+{
+  "name": "seedance-cinema-agent",
+  "version": "2.0.0",
+  "description": "Seedance 2.0 电影级提示词智能体 - 专业AI视频生成提示词工程系统",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["seedance", "ai-video", "prompt-engineering", "cinema"],
+  "author": "CinemaPrompt AI",
+  "license": "MIT"
+}
