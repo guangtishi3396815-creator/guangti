@@ -202,15 +202,6 @@
             background: rgba(233, 69, 96, 0.4);
         }
 
-        .zh-desc {
-            color: #8892b0;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 6px;
-        }
-
         .output-section {
             margin-top: 20px;
         }
@@ -281,45 +272,6 @@
             font-size: 0.8rem;
             margin-top: 4px;
         }
-
-        .status-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(26, 26, 46, 0.95);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #8892b0;
-            font-size: 0.85rem;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-        }
-
-        .api-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .credits {
-            color: #e94560;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
@@ -363,9 +315,6 @@
                             <option value="15">15秒</option>
                             <option value="30">30秒</option>
                             <option value="60">60秒</option>
-                            <option value="120">2分钟</option>
-                            <option value="300">5分钟</option>
-                            <option value="600">10分钟</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -511,9 +460,8 @@
                         <div class="shot">
                             <div class="shot-number">1</div>
                             <div class="shot-content">
-                                <div class="shot-type">镜头 1 - 开场镜头 (Establishing)</div>
+                                <div class="shot-type">镜头 1 - 开场镜头</div>
                                 <div class="shot-desc">等待生成...</div>
-                                <div class="shot-zh"></div>
                             </div>
                         </div>
                     </div>
@@ -522,177 +470,20 @@
         </div>
     </div>
 
-    <div class="status-bar">
-        <div class="status-item">
-            <span class="status-dot"></span>
-            <span>系统就绪</span>
-        </div>
-        <div class="api-status">
-            <span class="status-item">API: <span style="color: #4ade80;">已连接</span></span>
-            <span class="status-item credits">余额: 1,250 点</span>
-        </div>
-    </div>
-
     <script>
-        // 模板数据
-        const templates = {
-            sci_fi_epic: {
-                name: "科幻史诗",
-                prompt: "Epic sci-fi scene, massive futuristic cityscape with towering megastructures reaching into clouds, flying vehicles weaving between buildings, holographic advertisements glowing in neon colors, distant planet visible in sky, cinematic wide shot, aerial drone perspective, volumetric lighting with god rays, teal and orange color grading, lens flare from sun, 8k resolution, photorealistic, unreal engine 5, film grain, IMAX quality, dramatic atmosphere",
-                tags: {
-                    lens: ["wide_shot", "aerial_shot"],
-                    light: ["volumetric_light", "god_rays"],
-                    color: ["teal_orange", "high_contrast"]
-                }
-            },
-            cyberpunk_night: {
-                name: "赛博朋克",
-                prompt: "Cyberpunk city street at rainy night, lone figure walking through wet streets, towering skyscrapers with massive holographic neon signs in pink cyan and purple, reflections on rain-soaked pavement, cinematic medium shot, tracking camera movement, neon lighting with practical sources, volumetric fog, rain particles visible in light beams, teal and magenta color grading, 8k resolution, photorealistic, film grain",
-                tags: {
-                    lens: ["medium_shot", "tracking"],
-                    light: ["neon_light", "volumetric_fog"],
-                    color: ["teal_magenta", "high_contrast"]
-                }
-            },
-            documentary_nature: {
-                name: "纪录片",
-                prompt: "Stunning wildlife documentary footage, majestic lion walking through golden savanna grass at sunset, warm golden hour lighting, long shadows stretching across landscape, cinematic wide shot, slow tracking movement, shallow depth of field with beautiful bokeh, professional color grading with warm tones, 8k resolution, photorealistic, national geographic quality, film grain",
-                tags: {
-                    lens: ["wide_shot", "tracking"],
-                    light: ["golden_hour", "natural_light"],
-                    color: ["warm_tones", "natural_color"]
-                }
-            },
-            music_video_dance: {
-                name: "MV舞蹈",
-                prompt: "Dynamic music video dance scene, professional dancer in urban environment, dramatic rim lighting with colored gels, smoke and atmospheric haze, fast-paced editing style, multiple camera angles, vibrant color grading with saturated neon tones, motion blur on fast movements, rhythmic camera movements matching beat, 4k resolution, high energy, professional production quality",
-                tags: {
-                    lens: ["medium_shot", "close_up"],
-                    light: ["rim_light", "colored_gels"],
-                    color: ["vibrant", "saturated"]
-                }
-            },
-            romantic_drama: {
-                name: "浪漫剧情",
-                prompt: "Romantic cinematic scene, couple standing on cliff overlooking ocean at sunset, warm golden hour lighting, soft focus background with bokeh, gentle wind blowing through hair, cinematic medium close-up, slow dolly movement, shallow depth of field, warm color grading with soft highlights, lens flare from setting sun, emotional atmosphere, 8k resolution, photorealistic, film grain",
-                tags: {
-                    lens: ["medium_close_up", "dolly_in"],
-                    light: ["golden_hour", "soft_light"],
-                    color: ["warm_tones", "soft_highlights"]
-                }
-            },
-            horror_thriller: {
-                name: "恐怖惊悚",
-                prompt: "Horror thriller scene, dark abandoned hallway with flickering fluorescent lights, shadowy figure in distance, low key lighting with high contrast, Dutch angle camera tilt, handheld camera movement, film grain, desaturated color grading with cold blue tones, shallow depth of field, lens distortion, unsettling atmosphere, 4k resolution, cinematic",
-                tags: {
-                    lens: ["dutch_angle", "handheld"],
-                    light: ["low_key", "flickering_light"],
-                    color: ["desaturated", "cold_blue"]
-                }
-            },
-            action_sequence: {
-                name: "动作场面",
-                prompt: "High-octane action sequence, intense car chase through city streets at night, sparks flying from collisions, dramatic lighting with street lamps and neon signs, cinematic wide shot, fast-paced tracking camera, motion blur on vehicles, lens flares from headlights, teal and orange color grading, 8k resolution, photorealistic, IMAX quality",
-                tags: {
-                    lens: ["wide_shot", "tracking_shot"],
-                    light: ["dramatic_lighting", "neon_light"],
-                    color: ["teal_orange", "high_contrast"]
-                }
-            },
-            period_drama: {
-                name: "年代剧",
-                prompt: "Elegant period drama scene, 1920s grand ballroom with crystal chandeliers, dancers in vintage attire, warm tungsten lighting with golden glow, cinematic wide shot, smooth camera movement through crowd, shallow depth of field with beautiful bokeh from lights, sepia-tinged color grading with rich shadows, film grain, 8k resolution",
-                tags: {
-                    lens: ["wide_shot", "smooth_movement"],
-                    light: ["tungsten_light", "warm_light"],
-                    color: ["sepia_tinged", "warm_tones"]
-                }
-            },
-            underwater_world: {
-                name: "水下世界",
-                prompt: "Breathtaking underwater scene, crystal clear ocean with sun rays penetrating water surface, vibrant coral reef with tropical fish, diver swimming through frame, cinematic wide shot, slow graceful movement, volumetric light beams, blue-green color grading with caustic light patterns, particles floating in water, 8k resolution, photorealistic, documentary quality",
-                tags: {
-                    lens: ["wide_shot", "slow_movement"],
-                    light: ["natural_light", "caustic_light"],
-                    color: ["blue_green", "vibrant"]
-                }
-            },
-            space_odyssey: {
-                name: "太空漫游",
-                prompt: "Stunning space scene, astronaut floating near massive space station with Earth in background, stars scattered across infinite blackness, sun creating dramatic rim lighting on suit, cinematic wide shot, slow rotation movement, high contrast lighting, deep blacks with detailed shadows, blue and white color grading, 8k resolution, photorealistic, NASA quality",
-                tags: {
-                    lens: ["wide_shot", "slow_rotation"],
-                    light: ["rim_light", "high_contrast"],
-                    color: ["blue_white", "high_contrast"]
-                }
-            },
-            fantasy_magic: {
-                name: "奇幻魔法",
-                prompt: "Enchanting fantasy scene, ancient wizard casting spell in mystical forest, glowing magical particles swirling in air, ethereal light beams through trees, cinematic medium shot, slow motion spell effects, vibrant purple and gold color grading, volumetric fog, floating runes and symbols, 8k resolution, photorealistic, cinematic",
-                tags: {
-                    lens: ["medium_shot", "slow_motion"],
-                    light: ["ethereal_light", "volumetric_fog"],
-                    color: ["vibrant", "purple_gold"]
-                }
-            },
-            noir_detective: {
-                name: "黑色侦探",
-                prompt: "Classic film noir scene, detective sitting at desk in dimly lit office, venetian blinds casting striped shadows, cigarette smoke drifting through light beam, cinematic medium shot, dramatic chiaroscuro lighting, high contrast black and white with selective color, rain outside window, 4k resolution, cinematic, film grain",
-                tags: {
-                    lens: ["medium_shot", "low_angle"],
-                    light: ["chiaroscuro", "practical_light"],
-                    color: ["high_contrast", "monochrome"]
-                }
-            }
-        };
-
-        // 中文翻译映射 - 扩展完整
+        // 中文翻译映射
         const zhTranslations = {
-            // 镜头
-            wide_shot: "全景",
-            close_up: "特写",
-            tracking: "跟踪",
-            dolly_in: "推轨",
-            crane_shot: "摇臂",
-            steadicam: "斯坦尼康",
-            handheld: "手持",
-            aerial_shot: "航拍",
-            over_shoulder: "过肩",
-            point_of_view: "主观视角",
-            medium_shot: "中景",
-            extreme_close_up: "极特写",
-            // 光影
-            cinematic_lighting: "电影光",
-            golden_hour: "黄金时刻",
-            neon_light: "霓虹光",
-            volumetric_light: "体积光",
-            rim_light: "轮廓光",
-            three_point_lighting: "三点布光",
-            natural_light: "自然光",
-            soft_light: "柔光",
-            hard_light: "硬光",
-            chiaroscuro: "明暗对比",
-            god_rays: "上帝之光",
-            practical_light: "实景光源",
-            // 色彩
-            teal_orange: "青橙色调",
-            film_grain: "胶片颗粒",
-            high_contrast: "高对比",
-            desaturated: "低饱和",
-            vibrant: "鲜艳",
-            warm_tones: "暖色调",
-            cool_tones: "冷色调",
-            monochrome: "黑白",
-            vintage: "复古",
-            day_for_night: "日拍夜",
-            bleach_bypass: "漂白效果",
-            cross_process: "交叉冲印",
-            // 镜头类型描述
-            establishing: "开场镜头",
-            development: "发展镜头",
-            climax: "高潮镜头",
-            transition: "转折镜头",
-            ending: "结尾镜头"
+            wide_shot: "全景", close_up: "特写", tracking: "跟踪", dolly_in: "推轨",
+            crane_shot: "摇臂", steadicam: "斯坦尼康", handheld: "手持", aerial_shot: "航拍",
+            over_shoulder: "过肩", point_of_view: "主观视角", medium_shot: "中景", extreme_close_up: "极特写",
+            cinematic_lighting: "电影光", golden_hour: "黄金时刻", neon_light: "霓虹光",
+            volumetric_light: "体积光", rim_light: "轮廓光", three_point_lighting: "三点布光",
+            natural_light: "自然光", soft_light: "柔光", hard_light: "硬光",
+            chiaroscuro: "明暗对比", god_rays: "上帝之光", practical_light: "实景光源",
+            teal_orange: "青橙色调", film_grain: "胶片颗粒", high_contrast: "高对比",
+            desaturated: "低饱和", vibrant: "鲜艳", warm_tones: "暖色调",
+            cool_tones: "冷色调", monochrome: "黑白", vintage: "复古",
+            day_for_night: "日拍夜", bleach_bypass: "漂白效果", cross_process: "交叉冲印"
         };
 
         // 复制功能
@@ -702,7 +493,6 @@
                 let textToCopy = '';
                 
                 if (targetId === 'storyboard') {
-                    // 复制分镜内容
                     const shots = document.querySelectorAll('.shot');
                     shots.forEach((shot, index) => {
                         const type = shot.querySelector('.shot-type')?.textContent || '';
@@ -717,24 +507,17 @@
                 try {
                     await navigator.clipboard.writeText(textToCopy);
                     btn.textContent = '✅ 已复制';
-                    setTimeout(() => {
-                        btn.textContent = '📋 复制';
-                    }, 2000);
+                    setTimeout(() => btn.textContent = '📋 复制', 2000);
                 } catch (err) {
-                    console.error('复制失败:', err);
                     btn.textContent = '❌ 失败';
-                    setTimeout(() => {
-                        btn.textContent = '📋 复制';
-                    }, 2000);
+                    setTimeout(() => btn.textContent = '📋 复制', 2000);
                 }
             });
         });
 
         // 标签切换
         document.querySelectorAll('.tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                tag.classList.toggle('active');
-            });
+            tag.addEventListener('click', () => tag.classList.toggle('active'));
         });
 
         // 模板切换
@@ -752,7 +535,6 @@
             const ratio = document.getElementById('aspect-ratio').value;
             const mood = document.getElementById('mood').value;
 
-            // 获取选中的标签（现在标签显示中文，data-en存储英文）
             const activeLensTags = Array.from(document.querySelectorAll('#lens-tags .tag.active'));
             const activeLightTags = Array.from(document.querySelectorAll('#light-tags .tag.active'));
             const activeColorTags = Array.from(document.querySelectorAll('#color-tags .tag.active'));
@@ -761,17 +543,13 @@
             const activeLight = activeLightTags.map(t => t.getAttribute('data-en'));
             const activeColor = activeColorTags.map(t => t.getAttribute('data-en'));
             
-            // 中文标签名
             const activeLensZh = activeLensTags.map(t => t.textContent);
             const activeLightZh = activeLightTags.map(t => t.textContent);
             const activeColorZh = activeColorTags.map(t => t.textContent);
 
-            // 构建提示词
             const positivePrompt = `${desc}, ${activeLens.join(', ')}, ${activeLight.join(', ')}, ${activeColor.join(', ')}, 8k resolution, photorealistic, cinematic, film grain, professional color grading, ${mood} atmosphere`;
-
             const negativePrompt = "blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, cropped, out of frame, worst quality, low resolution, oversaturated, underexposed, overexposed, shaky camera, jittery motion, flickering, cartoon, anime, painting";
 
-            // 构建中文提示词
             const moodZhMap = {
                 epic: '史诗感', mysterious: '神秘感', romantic: '浪漫感', dark: '暗黑感',
                 powerful: '震撼感', warm: '温暖感', melancholic: '忧郁感', tense: '紧张感',
@@ -780,7 +558,6 @@
             
             const positiveZh = `场景：${desc || '未描述'}\n镜头：${activeLensZh.join('、') || '全景'}\n光影：${activeLightZh.join('、') || '电影光'}\n色彩：${activeColorZh.join('、') || '青橙色调'}\n氛围：${moodZhMap[mood] || mood}\n画质：8K超高清、照片级真实、电影质感、胶片颗粒、专业调色`;
 
-            // API 参数
             const apiParams = {
                 prompt: positivePrompt,
                 negative_prompt: negativePrompt,
@@ -794,16 +571,14 @@
                 stabilization: "high"
             };
 
-            // 更新输出
             document.getElementById('positive-output').textContent = positivePrompt;
             document.getElementById('negative-output').textContent = negativePrompt;
             document.getElementById('positive-zh').innerHTML = positiveZh.replace(/\n/g, '<br>');
             document.getElementById('api-output').textContent = JSON.stringify(apiParams, null, 2);
 
-            // 生成分镜 - 全部中文
+            // 生成分镜
             const shotCount = Math.ceil(parseInt(duration) / 5);
             const shotTypesZh = ['开场镜头', '发展镜头', '高潮镜头', '转折镜头', '结尾镜头'];
-            const shotTypesEn = ['establishing', 'development', 'climax', 'transition', 'ending'];
             
             let storyboardHTML = '';
             for (let i = 1; i <= shotCount; i++) {
@@ -816,9 +591,7 @@
                 const colorZhName = zhTranslations[colorTag] || activeColorZh[(i - 1) % activeColorZh.length] || '青橙色调';
                 
                 const shotTypeZh = shotTypesZh[Math.min(i - 1, shotTypesZh.length - 1)];
-                const shotTypeEn = shotTypesEn[Math.min(i - 1, shotTypesEn.length - 1)];
                 
-                // 生成中文分镜描述
                 const shotDescriptions = [
                     `以${lensZhName}展现场景全貌，${lightZhName}营造氛围，${colorZhName}强化视觉风格`,
                     `${lensZhName}推进叙事，${lightZhName}突出主体，${colorZhName}保持影调统一`,
