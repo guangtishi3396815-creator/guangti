@@ -202,28 +202,37 @@
             gap: 15px;
         }
 
-        .template-grid {
+        .template-grid-12 {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 18px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .template-btn {
-            padding: 10px 8px;
+        @media (max-width: 768px) {
+            .template-grid-12 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .template-btn-12 {
+            padding: 12px 8px;
             background: rgba(233, 69, 96, 0.1);
             border: 1px solid rgba(233, 69, 96, 0.3);
-            border-radius: 8px;
+            border-radius: 10px;
             color: #e94560;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
-        .template-btn:hover,
-        .template-btn.active {
-            background: rgba(233, 69, 96, 0.3);
+        .template-btn-12:hover,
+        .template-btn-12.active {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.4), rgba(255, 107, 107, 0.3));
             border-color: #e94560;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.2);
         }
 
         .tag-section {
@@ -476,13 +485,19 @@
             <div class="panel">
                 <h2>🎛️ 拍摄参数</h2>
 
-                <div class="template-grid">
-                    <button class="template-btn" onclick="loadTemplate('sci_fi')">科幻</button>
-                    <button class="template-btn" onclick="loadTemplate('cyberpunk')">赛博朋克</button>
-                    <button class="template-btn" onclick="loadTemplate('nature')">自然</button>
-                    <button class="template-btn" onclick="loadTemplate('romance')">浪漫</button>
-                    <button class="template-btn" onclick="loadTemplate('horror')">恐怖</button>
-                    <button class="template-btn" onclick="loadTemplate('action')">动作</button>
+                <div class="template-grid-12">
+                    <button class="template-btn-12" onclick="loadTemplate('sci_fi_epic')">🚀 科幻史诗</button>
+                    <button class="template-btn-12" onclick="loadTemplate('cyberpunk_night')">🌃 赛博朋克</button>
+                    <button class="template-btn-12" onclick="loadTemplate('documentary_nature')">🦁 纪录片</button>
+                    <button class="template-btn-12" onclick="loadTemplate('music_video_dance')">💃 MV舞蹈</button>
+                    <button class="template-btn-12" onclick="loadTemplate('romantic_drama')">💕 浪漫剧情</button>
+                    <button class="template-btn-12" onclick="loadTemplate('horror_thriller')">👻 恐怖惊悚</button>
+                    <button class="template-btn-12" onclick="loadTemplate('action_sequence')">💥 动作场面</button>
+                    <button class="template-btn-12" onclick="loadTemplate('period_drama')">🏛️ 年代剧</button>
+                    <button class="template-btn-12" onclick="loadTemplate('underwater_world')">🐠 水下世界</button>
+                    <button class="template-btn-12" onclick="loadTemplate('space_odyssey')">🌌 太空漫游</button>
+                    <button class="template-btn-12" onclick="loadTemplate('fantasy_magic')">🧙 奇幻魔法</button>
+                    <button class="template-btn-12" onclick="loadTemplate('noir_detective')">🕵️ 黑色侦探</button>
                 </div>
 
                 <div class="form-row">
@@ -885,12 +900,14 @@
             wide_shot: '全景', close_up: '特写', extreme_close_up: '极特写', medium_shot: '中景',
             tracking: '跟踪', dolly_in: '推轨', crane_shot: '摇臂', handheld: '手持',
             aerial_shot: '航拍', steadicam: '斯坦尼康', over_shoulder: '过肩', point_of_view: '主观视角',
+            telephoto: '长焦', low_angle: '低角度',
             cinematic_lighting: '电影光', golden_hour: '黄金时刻', blue_hour: '蓝调时刻', neon_light: '霓虹光',
             volumetric_light: '体积光', rim_light: '轮廓光', natural_light: '自然光', soft_light: '柔光',
             hard_light: '硬光', chiaroscuro: '明暗对比', god_rays: '上帝之光', practical_light: '实景光源',
             teal_orange: '青橙色调', orange_teal: '橙青色调', film_grain: '胶片颗粒', high_contrast: '高对比',
             low_contrast: '低对比', desaturated: '低饱和', vibrant: '鲜艳饱和', warm_tones: '暖色调',
-            cool_tones: '冷色调', monochrome: '黑白', sepia: '复古 sepia', cyberpunk_neon: '赛博霓虹'
+            cool_tones: '冷色调', monochrome: '黑白', sepia: '复古 sepia', cyberpunk_neon: '赛博霓虹',
+            soft_focus: '柔焦'
         };
 
         // ========== 页面交互函数 ==========
@@ -1073,21 +1090,124 @@
             document.getElementById('storyboard').innerHTML = html;
         }
 
-        // 加载模板
+        // 加载12种风格模板
         function loadTemplate(type) {
             const templates = {
-                sci_fi: '宇航员在火星表面行走，红色沙尘暴中，远处地球悬挂在暗红色天空，孤独而壮丽的太空探索场景',
-                cyberpunk: '雨夜霓虹街道，全息广告牌闪烁，主角站在湿漉漉的街道上，反射着粉色和青色的光芒',
-                nature: '金色草原上，狮群在夕阳下行走，长焦镜头捕捉野生动物的自然之美，国家地理风格',
-                romance: '海边日落，情侣手牵手走在沙滩上，暖色调的夕阳光洒在他们身上，浪漫温馨',
-                horror: '废弃医院的走廊，闪烁的荧光灯，阴影中似乎有什么在移动，手持摄影增强紧张感',
-                action: '城市街道汽车追逐，火花四溅，快速剪辑风格，轮胎摩擦地面的烟雾'
+                sci_fi_epic: {
+                    desc: '史诗级科幻场景，巨型太空战舰穿越星云，数千艘小型飞船伴随飞行，远处是正在爆炸的恒星，金色和紫色的光芒照亮整个画面，IMAX级别的视觉震撼',
+                    mood: 'epic',
+                    lens: ['wide_shot', 'aerial_shot', 'tracking'],
+                    light: ['volumetric_light', 'rim_light', 'god_rays'],
+                    color: ['orange_teal', 'high_contrast', 'vibrant']
+                },
+                cyberpunk_night: {
+                    desc: '赛博朋克雨夜，主角站在霓虹闪烁的街道中央，周围是高耸入云的摩天大楼，全息广告牌投射着粉色和青色的光芒，雨水在地面形成倒影',
+                    mood: 'mysterious',
+                    lens: ['tracking', 'medium_shot', 'close_up'],
+                    light: ['neon_light', 'practical_light', 'hard_light'],
+                    color: ['cyberpunk_neon', 'high_contrast', 'vibrant']
+                },
+                documentary_nature: {
+                    desc: '非洲大草原日出时分，雄狮站在金色草丛中的岩石上，远处是正在迁徙的角马群，晨光透过薄雾形成丁达尔效应，国家地理级别的野生动物摄影',
+                    mood: 'warm',
+                    lens: ['telephoto', 'close_up', 'wide_shot'],
+                    light: ['golden_hour', 'natural_light', 'soft_light'],
+                    color: ['warm_tones', 'film_grain', 'vibrant']
+                },
+                music_video_dance: {
+                    desc: '专业舞者在工业风仓库中表演，彩色聚光灯从上方投射，烟雾效果营造氛围感，高速摄影捕捉舞者的每一个动作，节奏感强烈的剪辑风格',
+                    mood: 'energetic',
+                    lens: ['tracking', 'medium_shot', 'low_angle'],
+                    light: ['practical_light', 'rim_light', 'hard_light'],
+                    color: ['vibrant', 'high_contrast', 'cyberpunk_neon']
+                },
+                romantic_drama: {
+                    desc: '情侣在海边悬崖上相拥，日落时分的金色阳光洒在他们身上，海风轻轻吹起女孩的头发，远处是波光粼粼的海面，浪漫唯美的氛围',
+                    mood: 'romantic',
+                    lens: ['close_up', 'medium_shot', 'dolly_in'],
+                    light: ['golden_hour', 'soft_light', 'rim_light'],
+                    color: ['warm_tones', 'film_grain', 'soft_focus']
+                },
+                horror_thriller: {
+                    desc: '废弃精神病院的走廊，闪烁的荧光灯发出嗡嗡声，阴影中似乎有什么在移动，手持摄影增强真实感，压抑恐怖的氛围让人窒息',
+                    mood: 'dark',
+                    lens: ['handheld', 'close_up', 'extreme_close_up'],
+                    light: ['practical_light', 'chiaroscuro', 'hard_light'],
+                    color: ['desaturated', 'high_contrast', 'monochrome']
+                },
+                action_sequence: {
+                    desc: '城市高速公路上的汽车追逐战，主角驾驶跑车在车流中穿梭，火花四溅，轮胎摩擦产生烟雾，多机位快速剪辑展现速度感',
+                    mood: 'powerful',
+                    lens: ['tracking', 'wide_shot', 'handheld'],
+                    light: ['practical_light', 'hard_light', 'neon_light'],
+                    color: ['orange_teal', 'high_contrast', 'vibrant']
+                },
+                period_drama: {
+                    desc: '1920年代上海滩的豪华舞会，穿着旗袍的女士和西装革履的绅士在水晶吊灯下翩翩起舞，复古的装潢和暖色调灯光营造怀旧氛围',
+                    mood: 'warm',
+                    lens: ['wide_shot', 'crane_shot', 'medium_shot'],
+                    light: ['practical_light', 'soft_light', 'warm_tones'],
+                    color: ['sepia', 'warm_tones', 'film_grain']
+                },
+                underwater_world: {
+                    desc: '深海珊瑚礁生态系统，五彩斑斓的热带鱼群在珊瑚间穿梭，阳光从水面穿透形成光束，潜水员在远处观察海龟，蓝色调的梦幻海底世界',
+                    mood: 'mysterious',
+                    lens: ['wide_shot', 'tracking', 'close_up'],
+                    light: ['volumetric_light', 'natural_light', 'god_rays'],
+                    color: ['cool_tones', 'vibrant', 'blue_hour']
+                },
+                space_odyssey: {
+                    desc: '宇航员在国际空间站外进行太空行走，地球在背景中缓缓转动，阳光从地平线升起照亮宇航服，浩瀚宇宙中的孤独与壮丽',
+                    mood: 'epic',
+                    lens: ['wide_shot', 'medium_shot', 'point_of_view'],
+                    light: ['rim_light', 'hard_light', 'volumetric_light'],
+                    color: ['cool_tones', 'high_contrast', 'desaturated']
+                },
+                fantasy_magic: {
+                    desc: '古老森林中的魔法仪式，巫师挥舞法杖召唤出金色魔法阵，萤火虫般的光点在空中飞舞，神秘的符文在地面上发光，奇幻史诗般的场景',
+                    mood: 'dreamy',
+                    lens: ['wide_shot', 'crane_shot', 'tracking'],
+                    light: ['god_rays', 'volumetric_light', 'practical_light'],
+                    color: ['warm_tones', 'vibrant', 'golden_hour']
+                },
+                noir_detective: {
+                    desc: '1940年代洛杉矶的私人侦探办公室，百叶窗将阳光切成条纹投射在烟雾中，侦探坐在办公桌后抽着烟斗，黑白高对比度的光影营造悬疑氛围',
+                    mood: 'mysterious',
+                    lens: ['medium_shot', 'low_angle', 'close_up'],
+                    light: ['chiaroscuro', 'practical_light', 'hard_light'],
+                    color: ['monochrome', 'high_contrast', 'desaturated']
+                }
             };
             
-            if (templates[type]) {
-                document.getElementById('scene-desc').value = templates[type];
-                // 自动触发分析
-                analyzeScene();
+            const template = templates[type];
+            if (template) {
+                document.getElementById('scene-desc').value = template.desc;
+                document.getElementById('mood').value = template.mood;
+                
+                // 更新标签
+                document.querySelectorAll('.tag').forEach(tag => {
+                    tag.classList.remove('active', 'ai-selected');
+                });
+                
+                // 设置模板标签
+                template.lens.forEach(l => {
+                    const tag = document.querySelector(`#lens-tags .tag[data-en="${l}"]`);
+                    if (tag) tag.classList.add('active', 'ai-selected');
+                });
+                template.light.forEach(l => {
+                    const tag = document.querySelector(`#light-tags .tag[data-en="${l}"]`);
+                    if (tag) tag.classList.add('active', 'ai-selected');
+                });
+                template.color.forEach(c => {
+                    const tag = document.querySelector(`#color-tags .tag[data-en="${c}"]`);
+                    if (tag) tag.classList.add('active', 'ai-selected');
+                });
+                
+                // 高亮当前按钮
+                document.querySelectorAll('.template-btn-12').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.classList.add('active');
             }
         }
 
