@@ -407,46 +407,54 @@
                 <div class="tag-section">
                     <h3>🎥 镜头语言</h3>
                     <div class="tag-list" id="lens-tags">
-                        <span class="tag active" data-zh="全景">wide_shot</span>
-                        <span class="tag" data-zh="特写">close_up</span>
-                        <span class="tag" data-zh="跟踪">tracking</span>
-                        <span class="tag" data-zh="推轨">dolly_in</span>
-                        <span class="tag" data-zh="摇臂">crane_shot</span>
-                        <span class="tag" data-zh="斯坦尼康">steadicam</span>
-                        <span class="tag" data-zh="手持">handheld</span>
-                        <span class="tag" data-zh="航拍">aerial_shot</span>
-                        <span class="tag" data-zh="过肩">over_shoulder</span>
-                        <span class="tag" data-zh="POV">point_of_view</span>
+                        <span class="tag active" data-en="wide_shot">全景</span>
+                        <span class="tag" data-en="close_up">特写</span>
+                        <span class="tag" data-en="tracking">跟踪</span>
+                        <span class="tag" data-en="dolly_in">推轨</span>
+                        <span class="tag" data-en="crane_shot">摇臂</span>
+                        <span class="tag" data-en="steadicam">斯坦尼康</span>
+                        <span class="tag" data-en="handheld">手持</span>
+                        <span class="tag" data-en="aerial_shot">航拍</span>
+                        <span class="tag" data-en="over_shoulder">过肩</span>
+                        <span class="tag" data-en="point_of_view">主观视角</span>
+                        <span class="tag" data-en="medium_shot">中景</span>
+                        <span class="tag" data-en="extreme_close_up">极特写</span>
                     </div>
                 </div>
 
                 <div class="tag-section">
                     <h3>💡 光影效果</h3>
                     <div class="tag-list" id="light-tags">
-                        <span class="tag active" data-zh="电影光">cinematic_lighting</span>
-                        <span class="tag" data-zh="黄金时刻">golden_hour</span>
-                        <span class="tag" data-zh="霓虹光">neon_light</span>
-                        <span class="tag" data-zh="体积光">volumetric_light</span>
-                        <span class="tag" data-zh="轮廓光">rim_light</span>
-                        <span class="tag" data-zh="三点布光">three_point_lighting</span>
-                        <span class="tag" data-zh="自然光">natural_light</span>
-                        <span class="tag" data-zh="柔光">soft_light</span>
-                        <span class="tag" data-zh="硬光">hard_light</span>
+                        <span class="tag active" data-en="cinematic_lighting">电影光</span>
+                        <span class="tag" data-en="golden_hour">黄金时刻</span>
+                        <span class="tag" data-en="neon_light">霓虹光</span>
+                        <span class="tag" data-en="volumetric_light">体积光</span>
+                        <span class="tag" data-en="rim_light">轮廓光</span>
+                        <span class="tag" data-en="three_point_lighting">三点布光</span>
+                        <span class="tag" data-en="natural_light">自然光</span>
+                        <span class="tag" data-en="soft_light">柔光</span>
+                        <span class="tag" data-en="hard_light">硬光</span>
+                        <span class="tag" data-en="chiaroscuro">明暗对比</span>
+                        <span class="tag" data-en="god_rays">上帝之光</span>
+                        <span class="tag" data-en="practical_light">实景光源</span>
                     </div>
                 </div>
 
                 <div class="tag-section">
                     <h3>🎨 色彩风格</h3>
                     <div class="tag-list" id="color-tags">
-                        <span class="tag active" data-zh="青橙色调">teal_orange</span>
-                        <span class="tag" data-zh="胶片颗粒">film_grain</span>
-                        <span class="tag" data-zh="高对比">high_contrast</span>
-                        <span class="tag" data-zh="低饱和">desaturated</span>
-                        <span class="tag" data-zh="鲜艳">vibrant</span>
-                        <span class="tag" data-zh="暖色调">warm_tones</span>
-                        <span class="tag" data-zh="冷色调">cool_tones</span>
-                        <span class="tag" data-zh="黑白">monochrome</span>
-                        <span class="tag" data-zh="复古">vintage</span>
+                        <span class="tag active" data-en="teal_orange">青橙色调</span>
+                        <span class="tag" data-en="film_grain">胶片颗粒</span>
+                        <span class="tag" data-en="high_contrast">高对比</span>
+                        <span class="tag" data-en="desaturated">低饱和</span>
+                        <span class="tag" data-en="vibrant">鲜艳</span>
+                        <span class="tag" data-en="warm_tones">暖色调</span>
+                        <span class="tag" data-en="cool_tones">冷色调</span>
+                        <span class="tag" data-en="monochrome">黑白</span>
+                        <span class="tag" data-en="vintage">复古</span>
+                        <span class="tag" data-en="day_for_night">日拍夜</span>
+                        <span class="tag" data-en="bleach_bypass">漂白效果</span>
+                        <span class="tag" data-en="cross_process">交叉冲印</span>
                     </div>
                 </div>
 
@@ -467,7 +475,10 @@
                     <div class="output-box">
                         <pre id="positive-output">点击"生成"按钮创建提示词...</pre>
                     </div>
-                    <div id="positive-zh" class="zh-desc" style="color: #8892b0; font-size: 0.8rem; margin-top: 5px;"></div>
+                    <div style="margin-top: 10px; padding: 10px; background: rgba(74, 222, 128, 0.1); border-radius: 6px; border-left: 3px solid #4ade80;">
+                        <div style="color: #4ade80; font-size: 0.8rem; margin-bottom: 5px;">🇨🇳 中文提示词</div>
+                        <div id="positive-zh" style="color: #ccd6f6; font-size: 0.85rem; line-height: 1.5;"></div>
+                    </div>
                 </div>
 
                 <div class="output-section">
@@ -478,7 +489,10 @@
                     <div class="output-box">
                         <pre id="negative-output">blurry, low quality, distorted, deformed...</pre>
                     </div>
-                    <div id="negative-zh" class="zh-desc" style="color: #8892b0; font-size: 0.8rem; margin-top: 5px;">模糊、低质量、扭曲、变形、水印、文字...</div>
+                    <div style="margin-top: 10px; padding: 10px; background: rgba(248, 113, 113, 0.1); border-radius: 6px; border-left: 3px solid #f87171;">
+                        <div style="color: #f87171; font-size: 0.8rem; margin-bottom: 5px;">🇨🇳 中文提示词</div>
+                        <div id="negative-zh" style="color: #ccd6f6; font-size: 0.85rem; line-height: 1.5;">模糊、低质量、扭曲、变形、解剖结构错误、水印、文字、标志、裁剪、出框、最差质量、低分辨率、过饱和、曝光不足、曝光过度、抖动、卡通、动漫、绘画</div>
+                    </div>
                 </div>
 
                 <div class="output-section">
@@ -632,8 +646,9 @@
             }
         };
 
-        // 中文翻译映射
+        // 中文翻译映射 - 扩展完整
         const zhTranslations = {
+            // 镜头
             wide_shot: "全景",
             close_up: "特写",
             tracking: "跟踪",
@@ -643,17 +658,41 @@
             handheld: "手持",
             aerial_shot: "航拍",
             over_shoulder: "过肩",
-            point_of_view: "POV",
+            point_of_view: "主观视角",
+            medium_shot: "中景",
+            extreme_close_up: "极特写",
+            // 光影
             cinematic_lighting: "电影光",
             golden_hour: "黄金时刻",
             neon_light: "霓虹光",
             volumetric_light: "体积光",
             rim_light: "轮廓光",
+            three_point_lighting: "三点布光",
+            natural_light: "自然光",
+            soft_light: "柔光",
+            hard_light: "硬光",
+            chiaroscuro: "明暗对比",
+            god_rays: "上帝之光",
+            practical_light: "实景光源",
+            // 色彩
             teal_orange: "青橙色调",
             film_grain: "胶片颗粒",
             high_contrast: "高对比",
             desaturated: "低饱和",
-            vibrant: "鲜艳"
+            vibrant: "鲜艳",
+            warm_tones: "暖色调",
+            cool_tones: "冷色调",
+            monochrome: "黑白",
+            vintage: "复古",
+            day_for_night: "日拍夜",
+            bleach_bypass: "漂白效果",
+            cross_process: "交叉冲印",
+            // 镜头类型描述
+            establishing: "开场镜头",
+            development: "发展镜头",
+            climax: "高潮镜头",
+            transition: "转折镜头",
+            ending: "结尾镜头"
         };
 
         // 复制功能
@@ -713,20 +752,33 @@
             const ratio = document.getElementById('aspect-ratio').value;
             const mood = document.getElementById('mood').value;
 
-            // 获取选中的标签
-            const activeLens = Array.from(document.querySelectorAll('#lens-tags .tag.active')).map(t => t.textContent);
-            const activeLight = Array.from(document.querySelectorAll('#light-tags .tag.active')).map(t => t.textContent);
-            const activeColor = Array.from(document.querySelectorAll('#color-tags .tag.active')).map(t => t.textContent);
+            // 获取选中的标签（现在标签显示中文，data-en存储英文）
+            const activeLensTags = Array.from(document.querySelectorAll('#lens-tags .tag.active'));
+            const activeLightTags = Array.from(document.querySelectorAll('#light-tags .tag.active'));
+            const activeColorTags = Array.from(document.querySelectorAll('#color-tags .tag.active'));
+            
+            const activeLens = activeLensTags.map(t => t.getAttribute('data-en'));
+            const activeLight = activeLightTags.map(t => t.getAttribute('data-en'));
+            const activeColor = activeColorTags.map(t => t.getAttribute('data-en'));
+            
+            // 中文标签名
+            const activeLensZh = activeLensTags.map(t => t.textContent);
+            const activeLightZh = activeLightTags.map(t => t.textContent);
+            const activeColorZh = activeColorTags.map(t => t.textContent);
 
             // 构建提示词
             const positivePrompt = `${desc}, ${activeLens.join(', ')}, ${activeLight.join(', ')}, ${activeColor.join(', ')}, 8k resolution, photorealistic, cinematic, film grain, professional color grading, ${mood} atmosphere`;
 
             const negativePrompt = "blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, cropped, out of frame, worst quality, low resolution, oversaturated, underexposed, overexposed, shaky camera, jittery motion, flickering, cartoon, anime, painting";
 
-            // 构建中文描述
-            const lensZh = activeLens.map(tag => zhTranslations[tag] || tag).join('、');
-            const lightZh = activeLight.map(tag => zhTranslations[tag] || tag).join('、');
-            const colorZh = activeColor.map(tag => zhTranslations[tag] || tag).join('、');
+            // 构建中文提示词
+            const moodZhMap = {
+                epic: '史诗感', mysterious: '神秘感', romantic: '浪漫感', dark: '暗黑感',
+                powerful: '震撼感', warm: '温暖感', melancholic: '忧郁感', tense: '紧张感',
+                dreamy: '梦幻感', energetic: '活力感'
+            };
+            
+            const positiveZh = `场景：${desc || '未描述'}\n镜头：${activeLensZh.join('、') || '全景'}\n光影：${activeLightZh.join('、') || '电影光'}\n色彩：${activeColorZh.join('、') || '青橙色调'}\n氛围：${moodZhMap[mood] || mood}\n画质：8K超高清、照片级真实、电影质感、胶片颗粒、专业调色`;
 
             // API 参数
             const apiParams = {
@@ -745,27 +797,48 @@
             // 更新输出
             document.getElementById('positive-output').textContent = positivePrompt;
             document.getElementById('negative-output').textContent = negativePrompt;
-            document.getElementById('positive-zh').textContent = `镜头：${lensZh} | 光影：${lightZh} | 色彩：${colorZh}`;
+            document.getElementById('positive-zh').innerHTML = positiveZh.replace(/\n/g, '<br>');
             document.getElementById('api-output').textContent = JSON.stringify(apiParams, null, 2);
 
-            // 生成分镜
+            // 生成分镜 - 全部中文
             const shotCount = Math.ceil(parseInt(duration) / 5);
-            const shotTypes = ['开场镜头', '发展镜头', '高潮镜头', '转折镜头', '结尾镜头'];
+            const shotTypesZh = ['开场镜头', '发展镜头', '高潮镜头', '转折镜头', '结尾镜头'];
+            const shotTypesEn = ['establishing', 'development', 'climax', 'transition', 'ending'];
+            
             let storyboardHTML = '';
             for (let i = 1; i <= shotCount; i++) {
                 const lensTag = activeLens[(i - 1) % activeLens.length] || 'wide_shot';
                 const lightTag = activeLight[(i - 1) % activeLight.length] || 'cinematic_lighting';
-                const lensZhName = zhTranslations[lensTag] || lensTag;
-                const lightZhName = zhTranslations[lightTag] || lightTag;
-                const shotType = shotTypes[Math.min(i - 1, shotTypes.length - 1)];
+                const colorTag = activeColor[(i - 1) % activeColor.length] || 'teal_orange';
+                
+                const lensZhName = zhTranslations[lensTag] || activeLensZh[(i - 1) % activeLensZh.length] || '全景';
+                const lightZhName = zhTranslations[lightTag] || activeLightZh[(i - 1) % activeLightZh.length] || '电影光';
+                const colorZhName = zhTranslations[colorTag] || activeColorZh[(i - 1) % activeColorZh.length] || '青橙色调';
+                
+                const shotTypeZh = shotTypesZh[Math.min(i - 1, shotTypesZh.length - 1)];
+                const shotTypeEn = shotTypesEn[Math.min(i - 1, shotTypesEn.length - 1)];
+                
+                // 生成中文分镜描述
+                const shotDescriptions = [
+                    `以${lensZhName}展现场景全貌，${lightZhName}营造氛围，${colorZhName}强化视觉风格`,
+                    `${lensZhName}推进叙事，${lightZhName}突出主体，${colorZhName}保持影调统一`,
+                    `${lensZhName}捕捉关键瞬间，${lightZhName}制造戏剧张力，${colorZhName}渲染情绪`,
+                    `${lensZhName}转折过渡，${lightZhName}暗示变化，${colorZhName}形成对比`,
+                    `${lensZhName}收尾定格，${lightZhName}升华主题，${colorZhName}留下余韵`
+                ];
+                const shotDesc = shotDescriptions[Math.min(i - 1, shotDescriptions.length - 1)];
                 
                 storyboardHTML += `
                     <div class="shot">
                         <div class="shot-number">${i}</div>
                         <div class="shot-content">
-                            <div class="shot-type">镜头 ${i} - ${shotType}</div>
-                            <div class="shot-desc">${lensTag}, ${lightTag}, 5s</div>
-                            <div class="shot-zh">${lensZhName} + ${lightZhName}</div>
+                            <div class="shot-type">${shotTypeZh} · 时长 5秒</div>
+                            <div class="shot-desc" style="color: #ccd6f6; font-size: 0.9rem; margin: 8px 0;">${shotDesc}</div>
+                            <div class="shot-zh" style="color: #8892b0; font-size: 0.8rem; display: flex; gap: 15px; flex-wrap: wrap;">
+                                <span>🎥 ${lensZhName}</span>
+                                <span>💡 ${lightZhName}</span>
+                                <span>🎨 ${colorZhName}</span>
+                            </div>
                         </div>
                     </div>
                 `;
