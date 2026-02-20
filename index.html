@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seedance 2.0 电影级提示词智能体</title>
+    <title>Seedance 2.0 电影级提示词智能体 - AI增强版</title>
     <style>
         * {
             margin: 0;
@@ -16,6 +16,7 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: #fff;
+            padding-bottom: 40px;
         }
 
         .container {
@@ -26,11 +27,11 @@
 
         header {
             text-align: center;
-            padding: 40px 0;
+            padding: 30px 0;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             background: linear-gradient(90deg, #e94560, #ff6b6b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -39,14 +40,104 @@
 
         header p {
             color: #8892b0;
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+
+        .ai-analyze-section {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.15), rgba(255, 107, 107, 0.1));
+            border: 2px solid rgba(233, 69, 96, 0.4);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .ai-analyze-section h2 {
+            color: #e94560;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-analyze-section h2::before {
+            content: "✨";
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .analyze-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .analyze-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 4px solid #4ade80;
+        }
+
+        .analyze-result h4 {
+            color: #4ade80;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .analyze-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .analyze-item .icon {
+            font-size: 1.2rem;
+        }
+
+        .analyze-item .content {
+            flex: 1;
+        }
+
+        .analyze-item .label {
+            color: #8892b0;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .analyze-item .value {
+            color: #ccd6f6;
+            font-size: 0.9rem;
         }
 
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
+            gap: 25px;
         }
 
         @media (max-width: 1024px) {
@@ -63,13 +154,13 @@
         }
 
         .panel h2 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-bottom: 20px;
             color: #e94560;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
@@ -101,7 +192,7 @@
         }
 
         .form-group textarea {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
 
@@ -113,20 +204,20 @@
 
         .template-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
         }
 
         .template-btn {
-            padding: 12px;
+            padding: 10px 8px;
             background: rgba(233, 69, 96, 0.1);
             border: 1px solid rgba(233, 69, 96, 0.3);
             border-radius: 8px;
             color: #e94560;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .template-btn:hover,
@@ -136,11 +227,11 @@
         }
 
         .tag-section {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .tag-section h3 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #8892b0;
             margin-bottom: 10px;
         }
@@ -148,15 +239,15 @@
         .tag-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .tag {
-            padding: 6px 12px;
+            padding: 5px 10px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            font-size: 0.8rem;
+            border-radius: 16px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -166,6 +257,12 @@
             background: rgba(233, 69, 96, 0.3);
             border-color: #e94560;
             color: #e94560;
+        }
+
+        .tag.ai-selected {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: #4ade80;
+            color: #4ade80;
         }
 
         .generate-btn {
@@ -179,7 +276,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .generate-btn:hover {
@@ -203,74 +300,143 @@
         }
 
         .output-section {
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .output-box {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
             padding: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             line-height: 1.6;
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
         }
 
         .output-box pre {
             white-space: pre-wrap;
             word-wrap: break-word;
+            color: #ccd6f6;
         }
 
         .storyboard {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .shot {
             display: flex;
-            gap: 15px;
-            padding: 12px;
+            gap: 12px;
+            padding: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
 
         .shot:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
 
         .shot-number {
-            width: 30px;
-            height: 30px;
-            background: #e94560;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
         .shot-content {
             flex: 1;
         }
 
+        .shot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
         .shot-type {
             color: #e94560;
             font-size: 0.85rem;
-            margin-bottom: 4px;
+            font-weight: 600;
         }
 
-        .shot-desc {
+        .shot-duration {
+            color: #8892b0;
+            font-size: 0.75rem;
+        }
+
+        .shot-script {
             color: #ccd6f6;
             font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            border-left: 3px solid #e94560;
         }
 
-        .shot-zh {
-            color: #8892b0;
+        .shot-tech {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
             font-size: 0.8rem;
-            margin-top: 4px;
+        }
+
+        .shot-tech span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            color: #8892b0;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(233, 69, 96, 0.3);
+            border-top-color: #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .tips-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #60a5fa;
+        }
+
+        .tips-box strong {
+            color: #93c5fd;
         }
     </style>
 </head>
@@ -278,32 +444,45 @@
     <div class="container">
         <header>
             <h1>🎬 Seedance 2.0 电影级提示词智能体</h1>
-            <p>专业 AI 视频生成提示词工程系统 | 电影级 / 纪录片 / MV 专用</p>
+            <p>AI 智能分析 + 专业分镜脚本 | 电影级 / 纪录片 / MV 专用</p>
         </header>
 
+        <!-- AI 智能分析区域 -->
+        <div class="ai-analyze-section">
+            <h2>AI 智能场景分析</h2>
+            <div class="form-group">
+                <label>输入场景描述，AI 将自动分析并推荐最佳镜头、光影和色彩方案</label>
+                <textarea id="scene-desc" placeholder="例如：一个孤独的宇航员站在火星悬崖边，望着远处蓝色的地球，红色的沙尘在风中飞舞，日落时分..."></textarea>
+            </div>
+            <button class="analyze-btn" id="analyze-btn" onclick="analyzeScene()">
+                <span>🤖</span>
+                <span>AI 深度分析场景</span>
+            </button>
+            
+            <div id="analyze-loading" style="display: none;">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span>AI 正在分析场景氛围、情感基调、视觉风格...请稍候</span>
+                </div>
+            </div>
+            
+            <div id="analyze-result" style="display: none;">
+                <!-- AI 分析结果将显示在这里 -->
+            </div>
+        </div>
+
         <div class="main-grid">
-            <!-- 左侧：输入面板 -->
+            <!-- 左侧：参数面板 -->
             <div class="panel">
-                <h2>📝 创意输入</h2>
+                <h2>🎛️ 拍摄参数</h2>
 
                 <div class="template-grid">
-                    <button class="template-btn active" data-template="sci_fi_epic">科幻史诗</button>
-                    <button class="template-btn" data-template="cyberpunk_night">赛博朋克</button>
-                    <button class="template-btn" data-template="documentary_nature">纪录片</button>
-                    <button class="template-btn" data-template="music_video_dance">MV舞蹈</button>
-                    <button class="template-btn" data-template="romantic_drama">浪漫剧情</button>
-                    <button class="template-btn" data-template="horror_thriller">恐怖惊悚</button>
-                    <button class="template-btn" data-template="action_sequence">动作场面</button>
-                    <button class="template-btn" data-template="period_drama">年代剧</button>
-                    <button class="template-btn" data-template="underwater_world">水下世界</button>
-                    <button class="template-btn" data-template="space_odyssey">太空漫游</button>
-                    <button class="template-btn" data-template="fantasy_magic">奇幻魔法</button>
-                    <button class="template-btn" data-template="noir_detective">黑色侦探</button>
-                </div>
-
-                <div class="form-group">
-                    <label>场景描述</label>
-                    <textarea id="scene-desc" placeholder="描述你想要的场景，例如：一个宇航员在火星表面行走，红色的沙漠和岩石，远处的地球在天空中..."></textarea>
+                    <button class="template-btn" onclick="loadTemplate('sci_fi')">科幻</button>
+                    <button class="template-btn" onclick="loadTemplate('cyberpunk')">赛博朋克</button>
+                    <button class="template-btn" onclick="loadTemplate('nature')">自然</button>
+                    <button class="template-btn" onclick="loadTemplate('romance')">浪漫</button>
+                    <button class="template-btn" onclick="loadTemplate('horror')">恐怖</button>
+                    <button class="template-btn" onclick="loadTemplate('action')">动作</button>
                 </div>
 
                 <div class="form-row">
@@ -320,66 +499,57 @@
                     <div class="form-group">
                         <label>画面比例</label>
                         <select id="aspect-ratio">
-                            <option value="16:9" selected>16:9 (电影)</option>
-                            <option value="9:16">9:16 (竖屏)</option>
-                            <option value="1:1">1:1 (方形)</option>
-                            <option value="2.39:1">2.39:1 (宽银幕)</option>
+                            <option value="16:9" selected>16:9 电影</option>
+                            <option value="9:16">9:16 竖屏</option>
+                            <option value="1:1">1:1 方形</option>
+                            <option value="2.39:1">2.39:1 宽银幕</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>情绪氛围</label>
-                        <select id="mood">
-                            <option value="epic">史诗</option>
-                            <option value="mysterious">神秘</option>
-                            <option value="romantic">浪漫</option>
-                            <option value="dark">暗黑</option>
-                            <option value="powerful">震撼</option>
-                            <option value="warm">温暖</option>
-                            <option value="melancholic">忧郁</option>
-                            <option value="tense">紧张</option>
-                            <option value="dreamy">梦幻</option>
-                            <option value="energetic">活力</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>生成模式</label>
-                        <select id="mode">
-                            <option value="pro" selected>Pro (专业)</option>
-                            <option value="cinema">Cinema (电影级)</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label>情绪氛围</label>
+                    <select id="mood">
+                        <option value="epic">史诗 / 宏大</option>
+                        <option value="mysterious">神秘 / 悬疑</option>
+                        <option value="romantic">浪漫 / 温情</option>
+                        <option value="dark">暗黑 / 压抑</option>
+                        <option value="powerful">震撼 / 冲击</option>
+                        <option value="warm">温暖 / 治愈</option>
+                        <option value="melancholic">忧郁 / 伤感</option>
+                        <option value="tense">紧张 / 刺激</option>
+                        <option value="dreamy">梦幻 / 超现实</option>
+                        <option value="energetic">活力 / 动感</option>
+                    </select>
                 </div>
 
                 <div class="tag-section">
-                    <h3>🎥 镜头语言</h3>
+                    <h3>🎥 镜头语言（点击选择多个）</h3>
                     <div class="tag-list" id="lens-tags">
-                        <span class="tag active" data-en="wide_shot">全景</span>
+                        <span class="tag" data-en="wide_shot">全景</span>
                         <span class="tag" data-en="close_up">特写</span>
+                        <span class="tag" data-en="extreme_close_up">极特写</span>
+                        <span class="tag" data-en="medium_shot">中景</span>
                         <span class="tag" data-en="tracking">跟踪</span>
                         <span class="tag" data-en="dolly_in">推轨</span>
                         <span class="tag" data-en="crane_shot">摇臂</span>
-                        <span class="tag" data-en="steadicam">斯坦尼康</span>
                         <span class="tag" data-en="handheld">手持</span>
                         <span class="tag" data-en="aerial_shot">航拍</span>
+                        <span class="tag" data-en="steadicam">斯坦尼康</span>
                         <span class="tag" data-en="over_shoulder">过肩</span>
                         <span class="tag" data-en="point_of_view">主观视角</span>
-                        <span class="tag" data-en="medium_shot">中景</span>
-                        <span class="tag" data-en="extreme_close_up">极特写</span>
                     </div>
                 </div>
 
                 <div class="tag-section">
                     <h3>💡 光影效果</h3>
                     <div class="tag-list" id="light-tags">
-                        <span class="tag active" data-en="cinematic_lighting">电影光</span>
+                        <span class="tag" data-en="cinematic_lighting">电影光</span>
                         <span class="tag" data-en="golden_hour">黄金时刻</span>
+                        <span class="tag" data-en="blue_hour">蓝调时刻</span>
                         <span class="tag" data-en="neon_light">霓虹光</span>
                         <span class="tag" data-en="volumetric_light">体积光</span>
                         <span class="tag" data-en="rim_light">轮廓光</span>
-                        <span class="tag" data-en="three_point_lighting">三点布光</span>
                         <span class="tag" data-en="natural_light">自然光</span>
                         <span class="tag" data-en="soft_light">柔光</span>
                         <span class="tag" data-en="hard_light">硬光</span>
@@ -392,24 +562,28 @@
                 <div class="tag-section">
                     <h3>🎨 色彩风格</h3>
                     <div class="tag-list" id="color-tags">
-                        <span class="tag active" data-en="teal_orange">青橙色调</span>
+                        <span class="tag" data-en="teal_orange">青橙色调</span>
+                        <span class="tag" data-en="orange_teal">橙青色调</span>
                         <span class="tag" data-en="film_grain">胶片颗粒</span>
                         <span class="tag" data-en="high_contrast">高对比</span>
+                        <span class="tag" data-en="low_contrast">低对比</span>
                         <span class="tag" data-en="desaturated">低饱和</span>
-                        <span class="tag" data-en="vibrant">鲜艳</span>
+                        <span class="tag" data-en="vibrant">鲜艳饱和</span>
                         <span class="tag" data-en="warm_tones">暖色调</span>
                         <span class="tag" data-en="cool_tones">冷色调</span>
                         <span class="tag" data-en="monochrome">黑白</span>
-                        <span class="tag" data-en="vintage">复古</span>
-                        <span class="tag" data-en="day_for_night">日拍夜</span>
-                        <span class="tag" data-en="bleach_bypass">漂白效果</span>
-                        <span class="tag" data-en="cross_process">交叉冲印</span>
+                        <span class="tag" data-en="sepia">复古 sepia</span>
+                        <span class="tag" data-en="cyberpunk_neon">赛博霓虹</span>
                     </div>
                 </div>
 
-                <button class="generate-btn" id="generate-btn">
-                    🚀 生成电影级提示词
+                <button class="generate-btn" onclick="generatePrompt()">
+                    🚀 生成电影级提示词 & 分镜脚本
                 </button>
+
+                <div class="tips-box">
+                    <strong>💡 提示：</strong>先使用 AI 分析功能自动匹配参数，或手动选择标签，然后点击生成按钮获取完整提示词和分镜脚本。
+                </div>
             </div>
 
             <!-- 右侧：输出面板 -->
@@ -417,52 +591,33 @@
                 <h2>🎬 生成结果</h2>
 
                 <div class="output-section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="color: #8892b0; font-size: 0.9rem;">正提示词 (Positive Prompt)</h3>
-                        <button class="copy-btn" data-target="positive-output">📋 复制</button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="color: #8892b0; font-size: 0.85rem;">正提示词</span>
+                        <button class="copy-btn" onclick="copyText('positive-output')">📋 复制</button>
                     </div>
                     <div class="output-box">
-                        <pre id="positive-output">点击"生成"按钮创建提示词...</pre>
+                        <pre id="positive-output">点击生成按钮创建提示词...</pre>
                     </div>
-                    <div style="margin-top: 10px; padding: 10px; background: rgba(74, 222, 128, 0.1); border-radius: 6px; border-left: 3px solid #4ade80;">
-                        <div style="color: #4ade80; font-size: 0.8rem; margin-bottom: 5px;">🇨🇳 中文提示词</div>
-                        <div id="positive-zh" style="color: #ccd6f6; font-size: 0.85rem; line-height: 1.5;"></div>
+                </div>
+
+                <div class="output-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="color: #8892b0; font-size: 0.85rem;">负提示词</span>
+                        <button class="copy-btn" onclick="copyText('negative-output')">📋 复制</button>
+                    </div>
+                    <div class="output-box">
+                        <pre id="negative-output"> blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, cropped, out of frame, worst quality, low resolution, oversaturated, underexposed, overexposed, cartoon, anime, painting, 3d render, cgi</pre>
                     </div>
                 </div>
 
                 <div class="output-section">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="color: #8892b0; font-size: 0.9rem;">负提示词 (Negative Prompt)</h3>
-                        <button class="copy-btn" data-target="negative-output">📋 复制</button>
-                    </div>
-                    <div class="output-box">
-                        <pre id="negative-output">blurry, low quality, distorted, deformed...</pre>
-                    </div>
-                    <div style="margin-top: 10px; padding: 10px; background: rgba(248, 113, 113, 0.1); border-radius: 6px; border-left: 3px solid #f87171;">
-                        <div style="color: #f87171; font-size: 0.8rem; margin-bottom: 5px;">🇨🇳 中文提示词</div>
-                        <div id="negative-zh" style="color: #ccd6f6; font-size: 0.85rem; line-height: 1.5;">模糊、低质量、扭曲、变形、解剖结构错误、水印、文字、标志、裁剪、出框、最差质量、低分辨率、过饱和、曝光不足、曝光过度、抖动、卡通、动漫、绘画</div>
-                    </div>
-                </div>
-
-                <div class="output-section">
-                    <h3 style="color: #8892b0; font-size: 0.9rem; margin-bottom: 10px;">API 参数 (JSON)</h3>
-                    <div class="output-box">
-                        <pre id="api-output">{}</pre>
-                    </div>
-                </div>
-
-                <div class="output-section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="color: #8892b0; font-size: 0.9rem;">分镜脚本 (Storyboard)</h3>
-                        <button class="copy-btn" data-target="storyboard">📋 复制全部</button>
+                        <span style="color: #8892b0; font-size: 0.9rem;">🎬 智能分镜脚本</span>
+                        <button class="copy-btn" onclick="copyStoryboard()">📋 复制全部</button>
                     </div>
                     <div class="storyboard" id="storyboard">
-                        <div class="shot">
-                            <div class="shot-number">1</div>
-                            <div class="shot-content">
-                                <div class="shot-type">镜头 1 - 开场镜头</div>
-                                <div class="shot-desc">等待生成...</div>
-                            </div>
+                        <div style="color: #8892b0; text-align: center; padding: 40px;">
+                            点击"生成"按钮创建分镜脚本...
                         </div>
                     </div>
                 </div>
@@ -471,152 +626,497 @@
     </div>
 
     <script>
-        // 中文翻译映射
-        const zhTranslations = {
-            wide_shot: "全景", close_up: "特写", tracking: "跟踪", dolly_in: "推轨",
-            crane_shot: "摇臂", steadicam: "斯坦尼康", handheld: "手持", aerial_shot: "航拍",
-            over_shoulder: "过肩", point_of_view: "主观视角", medium_shot: "中景", extreme_close_up: "极特写",
-            cinematic_lighting: "电影光", golden_hour: "黄金时刻", neon_light: "霓虹光",
-            volumetric_light: "体积光", rim_light: "轮廓光", three_point_lighting: "三点布光",
-            natural_light: "自然光", soft_light: "柔光", hard_light: "硬光",
-            chiaroscuro: "明暗对比", god_rays: "上帝之光", practical_light: "实景光源",
-            teal_orange: "青橙色调", film_grain: "胶片颗粒", high_contrast: "高对比",
-            desaturated: "低饱和", vibrant: "鲜艳", warm_tones: "暖色调",
-            cool_tones: "冷色调", monochrome: "黑白", vintage: "复古",
-            day_for_night: "日拍夜", bleach_bypass: "漂白效果", cross_process: "交叉冲印"
+        // ========== AI 场景分析引擎 ==========
+        
+        const sceneAnalyzer = {
+            // 关键词匹配规则
+            rules: {
+                // 场景类型
+                sciFi: ['太空', '宇宙', '星球', '宇航员', '飞船', '未来', '科技', '机械', '机器人', '外星', '火星', '月球'],
+                cyberpunk: ['赛博', '霓虹', '雨夜', '城市', '高楼', '未来都市', '黑客', '义体', '全息', '广告牌'],
+                nature: ['森林', '山脉', '海洋', '草原', '动物', '日落', '日出', '风景', '自然', '野生动物'],
+                romance: ['情侣', '爱情', '浪漫', '婚礼', '拥抱', '接吻', '夕阳', '海边', '约会'],
+                horror: ['恐怖', '鬼', '黑暗', '废弃', '血腥', '惊悚', '怪物', '阴森', '尖叫'],
+                action: ['追逐', '打斗', '爆炸', '枪战', '汽车', '速度', '战斗', '特工', '英雄'],
+                underwater: ['水下', '海底', '潜水', '珊瑚', '鱼群', '海洋深处'],
+                fantasy: ['魔法', '奇幻', '龙', '精灵', '城堡', '中世纪', '巫师', '神话']
+            },
+            
+            // 镜头推荐映射
+            lensRecommendations: {
+                sciFi: ['wide_shot', 'aerial_shot', 'tracking'],
+                cyberpunk: ['tracking', 'medium_shot', 'neon_light'],
+                nature: ['wide_shot', 'aerial_shot', 'close_up'],
+                romance: ['close_up', 'medium_shot', 'dolly_in'],
+                horror: ['handheld', 'close_up', 'extreme_close_up'],
+                action: ['tracking', 'handheld', 'wide_shot'],
+                underwater: ['wide_shot', 'tracking', 'close_up'],
+                fantasy: ['wide_shot', 'crane_shot', 'aerial_shot']
+            },
+            
+            // 光影推荐映射
+            lightRecommendations: {
+                sciFi: ['cinematic_lighting', 'volumetric_light', 'rim_light'],
+                cyberpunk: ['neon_light', 'practical_light', 'hard_light'],
+                nature: ['golden_hour', 'natural_light', 'soft_light'],
+                romance: ['golden_hour', 'soft_light', 'warm_tones'],
+                horror: ['chiaroscuro', 'hard_light', 'practical_light'],
+                action: ['hard_light', 'practical_light', 'god_rays'],
+                underwater: ['volumetric_light', 'natural_light', 'god_rays'],
+                fantasy: ['god_rays', 'volumetric_light', 'soft_light']
+            },
+            
+            // 色彩推荐映射
+            colorRecommendations: {
+                sciFi: ['teal_orange', 'cool_tones', 'high_contrast'],
+                cyberpunk: ['cyberpunk_neon', 'high_contrast', 'vibrant'],
+                nature: ['warm_tones', 'vibrant', 'film_grain'],
+                romance: ['warm_tones', 'soft_light', 'film_grain'],
+                horror: ['desaturated', 'high_contrast', 'monochrome'],
+                action: ['orange_teal', 'high_contrast', 'vibrant'],
+                underwater: ['cool_tones', 'blue_hour', 'vibrant'],
+                fantasy: ['warm_tones', 'vibrant', 'golden_hour']
+            },
+            
+            // 情绪映射
+            moodMapping: {
+                sciFi: 'epic',
+                cyberpunk: 'mysterious',
+                nature: 'warm',
+                romance: 'romantic',
+                horror: 'dark',
+                action: 'powerful',
+                underwater: 'mysterious',
+                fantasy: 'dreamy'
+            },
+
+            analyze(sceneDesc) {
+                const desc = sceneDesc.toLowerCase();
+                let scores = {};
+                
+                // 计算各类型匹配度
+                for (let [type, keywords] of Object.entries(this.rules)) {
+                    scores[type] = keywords.reduce((score, keyword) => {
+                        return desc.includes(keyword) ? score + 1 : score;
+                    }, 0);
+                }
+                
+                // 找出最匹配的类型
+                let bestMatch = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+                let sceneType = bestMatch[1] > 0 ? bestMatch[0] : 'nature';
+                
+                // 检测额外特征
+                let features = this.detectFeatures(desc);
+                
+                return {
+                    sceneType,
+                    sceneTypeName: this.getSceneTypeName(sceneType),
+                    confidence: Math.min(bestMatch[1] * 20, 95),
+                    lens: this.lensRecommendations[sceneType] || ['wide_shot'],
+                    light: this.lightRecommendations[sceneType] || ['cinematic_lighting'],
+                    color: this.colorRecommendations[sceneType] || ['teal_orange'],
+                    mood: this.moodMapping[sceneType] || 'epic',
+                    features,
+                    analysis: this.generateAnalysis(sceneType, features, desc)
+                };
+            },
+            
+            detectFeatures(desc) {
+                let features = [];
+                if (desc.includes('雨') || desc.includes('rain')) features.push('rain');
+                if (desc.includes('雾') || desc.includes('fog')) features.push('fog');
+                if (desc.includes('雪') || desc.includes('snow')) features.push('snow');
+                if (desc.includes('风') || desc.includes('wind')) features.push('wind');
+                if (desc.includes('火') || desc.includes('fire')) features.push('fire');
+                if (desc.includes('水') || desc.includes('water')) features.push('water');
+                if (desc.includes('夜晚') || desc.includes('night')) features.push('night');
+                if (desc.includes('日落') || desc.includes('sunset')) features.push('sunset');
+                if (desc.includes('室内') || desc.includes('室内')) features.push('indoor');
+                return features;
+            },
+            
+            getSceneTypeName(type) {
+                const names = {
+                    sciFi: '科幻太空', cyberpunk: '赛博朋克', nature: '自然风光',
+                    romance: '浪漫爱情', horror: '恐怖惊悚', action: '动作场面',
+                    underwater: '水下世界', fantasy: '奇幻魔法'
+                };
+                return names[type] || '通用场景';
+            },
+            
+            generateAnalysis(type, features, desc) {
+                let analyses = {
+                    sciFi: '场景具有强烈的未来感和科技元素，建议使用广角镜头展现场景宏大感，冷色调配合体积光营造太空/未来氛围',
+                    cyberpunk: '霓虹灯和高对比度是核心视觉元素，建议使用跟踪镜头增强动感，霓虹光配合青紫色调',
+                    nature: '自然风光强调真实感和美感，黄金时刻光线配合长焦镜头捕捉细节，暖色调增强亲和力',
+                    romance: '情感表达需要柔和光线和浅景深，特写镜头捕捉情绪，暖色调营造浪漫氛围',
+                    horror: '恐怖氛围依赖阴影和未知感，手持摄影增强真实感，高对比低饱和营造不安',
+                    action: '速度感和冲击力是关键，广角镜头展现场面，硬光增强力量感',
+                    underwater: '水下光线散射特性需要特殊处理，建议使用体积光表现光线穿透水体的效果',
+                    fantasy: '超现实感需要梦幻光线和鲜艳色彩，摇臂镜头展现场景宏大'
+                };
+                return analyses[type] || '根据场景特点，建议使用电影级镜头语言和色彩风格';
+            }
         };
 
-        // 复制功能
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const targetId = btn.getAttribute('data-target');
-                let textToCopy = '';
+        // ========== 智能分镜生成器 ==========
+        
+        const storyboardGenerator = {
+            generate(sceneDesc, duration, lensTags, lightTags, colorTags, mood) {
+                const shotCount = Math.max(2, Math.ceil(duration / 5));
+                const shots = [];
                 
-                if (targetId === 'storyboard') {
-                    const shots = document.querySelectorAll('.shot');
-                    shots.forEach((shot, index) => {
-                        const type = shot.querySelector('.shot-type')?.textContent || '';
-                        const desc = shot.querySelector('.shot-desc')?.textContent || '';
-                        textToCopy += `镜头${index + 1}: ${type}\n${desc}\n\n`;
-                    });
+                // 解析场景元素
+                const elements = this.parseSceneElements(sceneDesc);
+                
+                // 生成分镜结构
+                for (let i = 0; i < shotCount; i++) {
+                    const progress = i / (shotCount - 1); // 0 到 1
+                    const shot = this.createShot(i, progress, elements, lensTags, lightTags, colorTags, mood, duration);
+                    shots.push(shot);
+                }
+                
+                return shots;
+            },
+            
+            parseSceneElements(desc) {
+                // 提取场景中的关键元素
+                const elements = {
+                    subjects: [],
+                    locations: [],
+                    actions: [],
+                    times: []
+                };
+                
+                // 简单关键词提取
+                const subjectKeywords = ['宇航员', '情侣', '战士', '女孩', '男孩', '人物', '主角', '机器人', '动物'];
+                const locationKeywords = ['火星', '地球', '城市', '森林', '海洋', '房间', '街道', '山顶', '海边'];
+                const actionKeywords = ['行走', '奔跑', '站立', '看着', '飞翔', '游泳', '战斗', '拥抱'];
+                const timeKeywords = ['日落', '日出', '夜晚', '黄昏', '清晨'];
+                
+                subjectKeywords.forEach(k => { if (desc.includes(k)) elements.subjects.push(k); });
+                locationKeywords.forEach(k => { if (desc.includes(k)) elements.locations.push(k); });
+                actionKeywords.forEach(k => { if (desc.includes(k)) elements.actions.push(k); });
+                timeKeywords.forEach(k => { if (desc.includes(k)) elements.times.push(k); });
+                
+                return elements;
+            },
+            
+            createShot(index, progress, elements, lensTags, lightTags, colorTags, mood, totalDuration) {
+                const shotDuration = Math.floor(totalDuration / Math.ceil(totalDuration / 5));
+                const lens = lensTags[index % lensTags.length] || 'wide_shot';
+                const light = lightTags[index % lightTags.length] || 'cinematic_lighting';
+                const color = colorTags[index % colorTags.length] || 'teal_orange';
+                
+                // 根据进度确定镜头类型和文案
+                let type, script, cameraMove;
+                
+                if (progress === 0) {
+                    // 开场镜头
+                    type = '开场镜头 · Establishing Shot';
+                    cameraMove = lens === 'aerial_shot' ? '航拍下降' : '缓慢推近';
+                    script = this.generateOpeningScript(elements, lens, light);
+                } else if (progress === 1) {
+                    // 结尾镜头
+                    type = '结尾镜头 · Closing Shot';
+                    cameraMove = lens === 'close_up' ? '特写定格' : '缓慢拉远';
+                    script = this.generateClosingScript(elements, lens, light);
+                } else if (progress < 0.5) {
+                    // 发展
+                    type = '发展镜头 · Development';
+                    cameraMove = lens === 'tracking' ? '跟随主体' : '平稳横移';
+                    script = this.generateDevelopmentScript(elements, lens, light, progress);
                 } else {
-                    const element = document.getElementById(targetId);
-                    textToCopy = element?.textContent || '';
+                    // 高潮/转折
+                    type = '高潮镜头 · Climax';
+                    cameraMove = lens === 'handheld' ? '手持晃动' : '快速推近';
+                    script = this.generateClimaxScript(elements, lens, light);
                 }
                 
-                try {
-                    await navigator.clipboard.writeText(textToCopy);
-                    btn.textContent = '✅ 已复制';
-                    setTimeout(() => btn.textContent = '📋 复制', 2000);
-                } catch (err) {
-                    btn.textContent = '❌ 失败';
-                    setTimeout(() => btn.textContent = '📋 复制', 2000);
-                }
-            });
-        });
-
-        // 标签切换
-        document.querySelectorAll('.tag').forEach(tag => {
-            tag.addEventListener('click', () => tag.classList.toggle('active'));
-        });
-
-        // 模板切换
-        document.querySelectorAll('.template-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
-
-        // 生成按钮
-        document.getElementById('generate-btn').addEventListener('click', () => {
-            const desc = document.getElementById('scene-desc').value;
-            const duration = document.getElementById('duration').value;
-            const ratio = document.getElementById('aspect-ratio').value;
-            const mood = document.getElementById('mood').value;
-
-            const activeLensTags = Array.from(document.querySelectorAll('#lens-tags .tag.active'));
-            const activeLightTags = Array.from(document.querySelectorAll('#light-tags .tag.active'));
-            const activeColorTags = Array.from(document.querySelectorAll('#color-tags .tag.active'));
+                return {
+                    number: index + 1,
+                    type,
+                    duration: shotDuration,
+                    script,
+                    cameraMove,
+                    lens,
+                    light,
+                    color,
+                    lensName: zhTranslations[lens] || lens,
+                    lightName: zhTranslations[light] || light,
+                    colorName: zhTranslations[color] || color
+                };
+            },
             
-            const activeLens = activeLensTags.map(t => t.getAttribute('data-en'));
-            const activeLight = activeLightTags.map(t => t.getAttribute('data-en'));
-            const activeColor = activeColorTags.map(t => t.getAttribute('data-en'));
-            
-            const activeLensZh = activeLensTags.map(t => t.textContent);
-            const activeLightZh = activeLightTags.map(t => t.textContent);
-            const activeColorZh = activeColorTags.map(t => t.textContent);
-
-            const positivePrompt = `${desc}, ${activeLens.join(', ')}, ${activeLight.join(', ')}, ${activeColor.join(', ')}, 8k resolution, photorealistic, cinematic, film grain, professional color grading, ${mood} atmosphere`;
-            const negativePrompt = "blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, cropped, out of frame, worst quality, low resolution, oversaturated, underexposed, overexposed, shaky camera, jittery motion, flickering, cartoon, anime, painting";
-
-            const moodZhMap = {
-                epic: '史诗感', mysterious: '神秘感', romantic: '浪漫感', dark: '暗黑感',
-                powerful: '震撼感', warm: '温暖感', melancholic: '忧郁感', tense: '紧张感',
-                dreamy: '梦幻感', energetic: '活力感'
-            };
-            
-            const positiveZh = `场景：${desc || '未描述'}\n镜头：${activeLensZh.join('、') || '全景'}\n光影：${activeLightZh.join('、') || '电影光'}\n色彩：${activeColorZh.join('、') || '青橙色调'}\n氛围：${moodZhMap[mood] || mood}\n画质：8K超高清、照片级真实、电影质感、胶片颗粒、专业调色`;
-
-            const apiParams = {
-                prompt: positivePrompt,
-                negative_prompt: negativePrompt,
-                model: "seedance_2.0",
-                mode: "pro",
-                duration: parseInt(duration),
-                aspect_ratio: ratio,
-                cinematic_grade: true,
-                film_grain: true,
-                sharpness: 0.9,
-                stabilization: "high"
-            };
-
-            document.getElementById('positive-output').textContent = positivePrompt;
-            document.getElementById('negative-output').textContent = negativePrompt;
-            document.getElementById('positive-zh').innerHTML = positiveZh.replace(/\n/g, '<br>');
-            document.getElementById('api-output').textContent = JSON.stringify(apiParams, null, 2);
-
-            // 生成分镜
-            const shotCount = Math.ceil(parseInt(duration) / 5);
-            const shotTypesZh = ['开场镜头', '发展镜头', '高潮镜头', '转折镜头', '结尾镜头'];
-            
-            let storyboardHTML = '';
-            for (let i = 1; i <= shotCount; i++) {
-                const lensTag = activeLens[(i - 1) % activeLens.length] || 'wide_shot';
-                const lightTag = activeLight[(i - 1) % activeLight.length] || 'cinematic_lighting';
-                const colorTag = activeColor[(i - 1) % activeColor.length] || 'teal_orange';
+            generateOpeningScript(elements, lens, light) {
+                const subject = elements.subjects[0] || '主体';
+                const location = elements.locations[0] || '场景';
+                const time = elements.times[0] || '';
                 
-                const lensZhName = zhTranslations[lensTag] || activeLensZh[(i - 1) % activeLensZh.length] || '全景';
-                const lightZhName = zhTranslations[lightTag] || activeLightZh[(i - 1) % activeLightZh.length] || '电影光';
-                const colorZhName = zhTranslations[colorTag] || activeColorZh[(i - 1) % activeColorZh.length] || '青橙色调';
-                
-                const shotTypeZh = shotTypesZh[Math.min(i - 1, shotTypesZh.length - 1)];
-                
-                const shotDescriptions = [
-                    `以${lensZhName}展现场景全貌，${lightZhName}营造氛围，${colorZhName}强化视觉风格`,
-                    `${lensZhName}推进叙事，${lightZhName}突出主体，${colorZhName}保持影调统一`,
-                    `${lensZhName}捕捉关键瞬间，${lightZhName}制造戏剧张力，${colorZhName}渲染情绪`,
-                    `${lensZhName}转折过渡，${lightZhName}暗示变化，${colorZhName}形成对比`,
-                    `${lensZhName}收尾定格，${lightZhName}升华主题，${colorZhName}留下余韵`
+                const scripts = [
+                    `${time}的${location}，${zhTranslations[lens]}缓缓展现场景全貌，${zhTranslations[light]}为画面奠定基调`,
+                    `镜头从远处缓缓推进，${location}的${time}景色逐渐清晰，${subject}进入画面`,
+                    `以${zhTranslations[lens]}开场，${location}在${zhTranslations[light]}下呈现出独特的氛围`
                 ];
-                const shotDesc = shotDescriptions[Math.min(i - 1, shotDescriptions.length - 1)];
+                return scripts[Math.floor(Math.random() * scripts.length)];
+            },
+            
+            generateDevelopmentScript(elements, lens, light, progress) {
+                const subject = elements.subjects[0] || '主体';
+                const action = elements.actions[0] || '移动';
                 
-                storyboardHTML += `
-                    <div class="shot">
-                        <div class="shot-number">${i}</div>
-                        <div class="shot-content">
-                            <div class="shot-type">${shotTypeZh} · 时长 5秒</div>
-                            <div class="shot-desc" style="color: #ccd6f6; font-size: 0.9rem; margin: 8px 0;">${shotDesc}</div>
-                            <div class="shot-zh" style="color: #8892b0; font-size: 0.8rem; display: flex; gap: 15px; flex-wrap: wrap;">
-                                <span>🎥 ${lensZhName}</span>
-                                <span>💡 ${lightZhName}</span>
-                                <span>🎨 ${colorZhName}</span>
-                            </div>
+                return `${zhTranslations[lens]}捕捉${subject}${action}的瞬间，${zhTranslations[light]}突出主体轮廓，推进叙事发展`;
+            },
+            
+            generateClimaxScript(elements, lens, light) {
+                const subject = elements.subjects[0] || '主体';
+                return `情绪达到顶点，${zhTranslations[lens]}聚焦${subject}的关键瞬间，${zhTranslations[light]}强化戏剧张力`;
+            },
+            
+            generateClosingScript(elements, lens, light) {
+                const location = elements.locations[0] || '场景';
+                return `以${zhTranslations[lens]}收尾，${zhTranslations[light]}升华主题，留下深刻印象`;
+            }
+        };
+
+        // ========== 中文翻译映射 ==========
+        
+        const zhTranslations = {
+            wide_shot: '全景', close_up: '特写', extreme_close_up: '极特写', medium_shot: '中景',
+            tracking: '跟踪', dolly_in: '推轨', crane_shot: '摇臂', handheld: '手持',
+            aerial_shot: '航拍', steadicam: '斯坦尼康', over_shoulder: '过肩', point_of_view: '主观视角',
+            cinematic_lighting: '电影光', golden_hour: '黄金时刻', blue_hour: '蓝调时刻', neon_light: '霓虹光',
+            volumetric_light: '体积光', rim_light: '轮廓光', natural_light: '自然光', soft_light: '柔光',
+            hard_light: '硬光', chiaroscuro: '明暗对比', god_rays: '上帝之光', practical_light: '实景光源',
+            teal_orange: '青橙色调', orange_teal: '橙青色调', film_grain: '胶片颗粒', high_contrast: '高对比',
+            low_contrast: '低对比', desaturated: '低饱和', vibrant: '鲜艳饱和', warm_tones: '暖色调',
+            cool_tones: '冷色调', monochrome: '黑白', sepia: '复古 sepia', cyberpunk_neon: '赛博霓虹'
+        };
+
+        // ========== 页面交互函数 ==========
+
+        // AI 分析场景
+        async function analyzeScene() {
+            const desc = document.getElementById('scene-desc').value.trim();
+            if (!desc) {
+                alert('请先输入场景描述');
+                return;
+            }
+            
+            // 显示加载
+            document.getElementById('analyze-loading').style.display = 'block';
+            document.getElementById('analyze-result').style.display = 'none';
+            document.getElementById('analyze-btn').disabled = true;
+            
+            // 模拟 AI 分析延迟
+            await new Promise(r => setTimeout(r, 1500));
+            
+            // 执行分析
+            const result = sceneAnalyzer.analyze(desc);
+            
+            // 更新 UI
+            updateTagsWithAIResult(result);
+            updateMoodSelect(result.mood);
+            
+            // 显示分析结果
+            displayAnalyzeResult(result);
+            
+            // 隐藏加载
+            document.getElementById('analyze-loading').style.display = 'none';
+            document.getElementById('analyze-btn').disabled = false;
+        }
+        
+        function displayAnalyzeResult(result) {
+            const html = `
+                <div class="analyze-result">
+                    <h4>🎯 AI 分析结果（置信度 ${result.confidence}%）</h4>
+                    <div class="analyze-item">
+                        <span class="icon">🎬</span>
+                        <div class="content">
+                            <div class="label">场景类型</div>
+                            <div class="value">${result.sceneTypeName}</div>
                         </div>
                     </div>
-                `;
+                    <div class="analyze-item">
+                        <span class="icon">🎥</span>
+                        <div class="content">
+                            <div class="label">推荐镜头</div>
+                            <div class="value">${result.lens.map(l => zhTranslations[l] || l).join('、')}</div>
+                        </div>
+                    </div>
+                    <div class="analyze-item">
+                        <span class="icon">💡</span>
+                        <div class="content">
+                            <div class="label">推荐光影</div>
+                            <div class="value">${result.light.map(l => zhTranslations[l] || l).join('、')}</div>
+                        </div>
+                    </div>
+                    <div class="analyze-item">
+                        <span class="icon">🎨</span>
+                        <div class="content">
+                            <div class="label">推荐色彩</div>
+                            <div class="value">${result.color.map(c => zhTranslations[c] || c).join('、')}</div>
+                        </div>
+                    </div>
+                    <div class="analyze-item">
+                        <span class="icon">💭</span>
+                        <div class="content">
+                            <div class="label">分析建议</div>
+                            <div class="value">${result.analysis}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('analyze-result').innerHTML = html;
+            document.getElementById('analyze-result').style.display = 'block';
+        }
+        
+        function updateTagsWithAIResult(result) {
+            // 清除所有选中状态
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.classList.remove('active', 'ai-selected');
+            });
+            
+            // 设置 AI 推荐的标签
+            result.lens.forEach(lens => {
+                const tag = document.querySelector(`#lens-tags .tag[data-en="${lens}"]`);
+                if (tag) tag.classList.add('active', 'ai-selected');
+            });
+            
+            result.light.forEach(light => {
+                const tag = document.querySelector(`#light-tags .tag[data-en="${light}"]`);
+                if (tag) tag.classList.add('active', 'ai-selected');
+            });
+            
+            result.color.forEach(color => {
+                const tag = document.querySelector(`#color-tags .tag[data-en="${color}"]`);
+                if (tag) tag.classList.add('active', 'ai-selected');
+            });
+        }
+        
+        function updateMoodSelect(mood) {
+            document.getElementById('mood').value = mood;
+        }
+
+        // 生成提示词和分镜
+        function generatePrompt() {
+            const desc = document.getElementById('scene-desc').value.trim();
+            const duration = parseInt(document.getElementById('duration').value);
+            const ratio = document.getElementById('aspect-ratio').value;
+            const mood = document.getElementById('mood').value;
+            
+            if (!desc) {
+                alert('请先输入场景描述');
+                return;
             }
-            document.getElementById('storyboard').innerHTML = storyboardHTML;
+            
+            // 获取选中的标签
+            const lensTags = Array.from(document.querySelectorAll('#lens-tags .tag.active')).map(t => t.dataset.en);
+            const lightTags = Array.from(document.querySelectorAll('#light-tags .tag.active')).map(t => t.dataset.en);
+            const colorTags = Array.from(document.querySelectorAll('#color-tags .tag.active')).map(t => t.dataset.en);
+            
+            // 如果没有选择标签，使用默认值
+            if (lensTags.length === 0) lensTags.push('wide_shot');
+            if (lightTags.length === 0) lightTags.push('cinematic_lighting');
+            if (colorTags.length === 0) colorTags.push('teal_orange');
+            
+            // 生成提示词
+            const positivePrompt = generatePositivePrompt(desc, lensTags, lightTags, colorTags, mood);
+            const negativePrompt = "blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, cropped, out of frame, worst quality, low resolution, oversaturated, underexposed, overexposed, cartoon, anime, painting, 3d render, cgi";
+            
+            document.getElementById('positive-output').textContent = positivePrompt;
+            document.getElementById('negative-output').textContent = negativePrompt;
+            
+            // 生成分镜
+            const shots = storyboardGenerator.generate(desc, duration, lensTags, lightTags, colorTags, mood);
+            renderStoryboard(shots);
+        }
+        
+        function generatePositivePrompt(desc, lens, light, color, mood) {
+            const moodWords = {
+                epic: 'epic, grand, majestic, awe-inspiring',
+                mysterious: 'mysterious, enigmatic, atmospheric, moody',
+                romantic: 'romantic, tender, intimate, emotional',
+                dark: 'dark, ominous, foreboding, sinister',
+                powerful: 'powerful, intense, dramatic, impactful',
+                warm: 'warm, cozy, inviting, comforting',
+                melancholic: 'melancholic, somber, wistful, nostalgic',
+                tense: 'tense, suspenseful, thrilling, gripping',
+                dreamy: 'dreamy, ethereal, surreal, otherworldly',
+                energetic: 'energetic, dynamic, vibrant, lively'
+            };
+            
+            return `${desc}, ${lens.join(', ')}, ${light.join(', ')}, ${color.join(', ')}, ${moodWords[mood] || mood}, 8k resolution, photorealistic, cinematic composition, film grain, professional color grading, highly detailed, masterpiece, best quality`;
+        }
+        
+        function renderStoryboard(shots) {
+            const html = shots.map(shot => `
+                <div class="shot">
+                    <div class="shot-number">${shot.number}</div>
+                    <div class="shot-content">
+                        <div class="shot-header">
+                            <span class="shot-type">${shot.type}</span>
+                            <span class="shot-duration">⏱️ ${shot.duration}秒</span>
+                        </div>
+                        <div class="shot-script">${shot.script}</div>
+                        <div class="shot-tech">
+                            <span>🎥 ${shot.lensName}</span>
+                            <span>💡 ${shot.lightName}</span>
+                            <span>🎨 ${shot.colorName}</span>
+                            <span>📹 ${shot.cameraMove}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('storyboard').innerHTML = html;
+        }
+
+        // 加载模板
+        function loadTemplate(type) {
+            const templates = {
+                sci_fi: '宇航员在火星表面行走，红色沙尘暴中，远处地球悬挂在暗红色天空，孤独而壮丽的太空探索场景',
+                cyberpunk: '雨夜霓虹街道，全息广告牌闪烁，主角站在湿漉漉的街道上，反射着粉色和青色的光芒',
+                nature: '金色草原上，狮群在夕阳下行走，长焦镜头捕捉野生动物的自然之美，国家地理风格',
+                romance: '海边日落，情侣手牵手走在沙滩上，暖色调的夕阳光洒在他们身上，浪漫温馨',
+                horror: '废弃医院的走廊，闪烁的荧光灯，阴影中似乎有什么在移动，手持摄影增强紧张感',
+                action: '城市街道汽车追逐，火花四溅，快速剪辑风格，轮胎摩擦地面的烟雾'
+            };
+            
+            if (templates[type]) {
+                document.getElementById('scene-desc').value = templates[type];
+                // 自动触发分析
+                analyzeScene();
+            }
+        }
+
+        // 复制功能
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('已复制到剪贴板');
+            });
+        }
+        
+        function copyStoryboard() {
+            const shots = document.querySelectorAll('.shot');
+            let text = '🎬 分镜脚本\n\n';
+            shots.forEach(shot => {
+                const num = shot.querySelector('.shot-number').textContent;
+                const type = shot.querySelector('.shot-type').textContent;
+                const script = shot.querySelector('.shot-script').textContent;
+                const tech = shot.querySelector('.shot-tech').textContent;
+                text += `镜头 ${num}: ${type}\n${script}\n${tech}\n\n`;
+            });
+            navigator.clipboard.writeText(text).then(() => alert('分镜脚本已复制'));
+        }
+
+        // 标签点击事件
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
         });
     </script>
 </body>
